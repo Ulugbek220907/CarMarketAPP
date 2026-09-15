@@ -22,13 +22,23 @@ if (databaseUrl && (databaseUrl.startsWith('postgres://') || databaseUrl.startsW
 } else {
   dbType = 'sqlite';
   const sqlite3 = require('sqlite3').verbose();
-  const dataDir = path.join(__dirname, '..', 'data');
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+  let dbPath = ':memory:';
+  try {
+    const dataDir = path.join(__dirname, '..', 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    dbPath = path.join(dataDir, 'drivemarket.db');
+  } catch (err) {
+    console.warn('[Database] Could not write to server/data, trying /tmp:', err.message);
+    try {
+      dbPath = path.join('/tmp', 'drivemarket.db');
+    } catch (e) {
+      dbPath = ':memory:';
+    }
   }
-  const dbPath = path.join(dataDir, 'drivemarket.db');
   sqliteDb = new sqlite3.Database(dbPath);
-  console.log(`[Database] Connected to local SQLite at ${dbPath}`);
+  console.log(`[Database] Connected to SQLite database at ${dbPath}`);
 }
 
 // Unified query wrapper

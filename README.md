@@ -49,29 +49,25 @@ DriveMarket is a modern, full-stack automotive marketplace mobile application bu
 
 ---
 
-## 🚀 Deploying to Render
+## 🚀 Deploying to Render (100% Free Tier)
 
-You can deploy the backend to Render in minutes using either the **Blueprint (Recommended)** or **Manual Setup**.
+Render limits accounts to **one free PostgreSQL database**. To make deployment 100% free and avoid limit conflicts, DriveMarket includes a built-in SQLite engine with automatic initial seeding.
 
 ### Option A: 1-Click Blueprint (Recommended)
-1. Push this repository to GitHub: `https://github.com/Ulugbek220907/CarMarketAPP.git`.
-2. Go to your [Render Dashboard](https://dashboard.render.com).
-3. Click **New +** → **Blueprint**.
-4. Select your `CarMarketAPP` repository.
-5. Render reads `render.yaml` and automatically creates:
-   * **`carmarket-api`** (Web Service running Node.js)
-   * **`carmarket-db`** (Managed PostgreSQL database on Render Free Plan)
-   * Automatically connects `DATABASE_URL` between them!
-6. Once deployed, copy your service URL (e.g. `https://carmarket-api-xxxx.onrender.com`).
+1. Go to your [Render Dashboard](https://dashboard.render.com).
+2. Click **New +** → **Blueprint**.
+3. Select your `CarMarketAPP` repository.
+4. Render reads `render.yaml` and deploys **`carmarket-api`** on the **Free Tier**.
+5. Once deployed, copy your service URL (e.g. `https://carmarket-api-xxxx.onrender.com`).
+6. *Optional*: If you already have a PostgreSQL database on Render, simply set `DATABASE_URL` in the Environment tab of `carmarket-api` and it will automatically connect to PostgreSQL!
 
-### Option B: Manual Web Service + PostgreSQL
-1. Create a **PostgreSQL Database** on Render (`carmarket-db`).
-2. Create a **Web Service** on Render pointing to your GitHub repo:
+### Option B: Manual Web Service
+1. Create a **Web Service** on Render pointing to your GitHub repo:
    * **Root Directory**: `server`
    * **Build Command**: `npm install`
    * **Start Command**: `npm start`
-   * **Environment Variable**: `DATABASE_URL` = your Render Postgres Internal Connection String.
-3. Once live, test your deployment at `https://<your-service>.onrender.com/health`.
+   * **Plan**: Free
+2. Test deployment at `https://<your-service>.onrender.com/health`.
 
 ---
 
