@@ -12,8 +12,8 @@ object ApiClient {
     private const val PREF_NAME = "drivemarket_api_prefs"
     private const val KEY_BASE_URL = "custom_base_url"
 
-    // Default Render endpoint - update with your actual Render service URL
-    const val DEFAULT_RENDER_URL = "https://carmarketapp.onrender.com/"
+    // Live Render production endpoint
+    const val DEFAULT_RENDER_URL = "https://carmarket-api-q66k.onrender.com/"
     // Local development emulator / test URL
     const val LOCAL_DEV_URL = "http://10.0.2.2:10000/"
 
