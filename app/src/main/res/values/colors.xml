@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DriveMarket Brand Color Palette (from DESIGN.md) -->
+    <color name="primary">#004AC6</color>
+    <color name="primary_container">#2563EB</color>
+    <color name="primary_fixed">#DBE1FF</color>
+    <color name="primary_fixed_dim">#B4C5FF</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_container">#EEEFFF</color>
+    <color name="on_primary_fixed">#00174B</color>
+    <color name="on_primary_fixed_variant">#003EA8</color>
+
+    <!-- Secondary / High-Value Deals / CARFAX Green -->
+    <color name="secondary">#006C4A</color>
+    <color name="secondary_container">#82F5C1</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_secondary_container">#00714E</color>
+    <color name="deal_emerald">#059669</color>
+    <color name="deal_emerald_bg">#ECFDF5</color>
+    <color name="deal_emerald_border">#A7F3D0</color>
+
+    <!-- Surface & Background Hierarchy -->
+    <color name="background">#FAF8FF</color>
+    <color name="surface">#FAF8FF</color>
+    <color name="surface_bright">#FAF8FF</color>
+    <color name="surface_dim">#D2D9F4</color>
+    <color name="surface_container_lowest">#FFFFFF</color>
+    <color name="surface_container_low">#F2F3FF</color>
+    <color name="surface_container">#EAEDFF</color>
+    <color name="surface_container_high">#E2E7FF</color>
+    <color name="surface_container_highest">#DAE2FD</color>
+
+    <!-- Neutral Typography & Content -->
+    <color name="on_surface">#131B2E</color>
+    <color name="on_surface_variant">#434655</color>
+    <color name="on_background">#131B2E</color>
+    <color name="inverse_surface">#283044</color>
+    <color name="inverse_on_surface">#EEF0FF</color>
+
+    <!-- Outlines & Borders -->
+    <color name="outline">#737686</color>
+    <color name="outline_variant">#E2E8F0</color>
+    <color name="outline_variant_subtle">#F1F5F9</color>
+
+    <!-- Semantic / Status / Alerts -->
+    <color name="error">#BA1A1A</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#FFDAD6</color>
+    <color name="on_error_container">#93000A</color>
+    <color name="star_yellow">#EAB308</color>
+    <color name="chip_bg_subtle">#F8FAFC</color>
+
+    <!-- Grayscale Tones for compatibility -->
+    <color name="gray_900">#131B2E</color>
+    <color name="gray_800">#283044</color>
+    <color name="gray_700">#434655</color>
+    <color name="gray_600">#64748B</color>
+    <color name="gray_500">#737686</color>
+    <color name="gray_400">#94A3B8</color>
+    <color name="gray_300">#CBD5E1</color>
+    <color name="gray_200">#E2E8F0</color>
+    <color name="gray_100">#F1F5F9</color>
+    <color name="gray_50">#FAF8FF</color>
+
+    <!-- Standard Aliases for compatibility -->
+    <color name="black">#131B2E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="pure_white">#FFFFFF</color>
+    <color name="border_black">#131B2E</color>
+    <color name="border_light">#E2E8F0</color>
+    <color name="bg_screen">#FAF8FF</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_surface">#FAF8FF</color>
+    <color name="text_primary">#131B2E</color>
+    <color name="text_secondary">#434655</color>
+    <color name="text_inverse">#FFFFFF</color>
+    <color name="danger_red">#BA1A1A</color>
+    <color name="verified_badge_bg">#2563EB</color>
+    <color name="tag_unselected_bg">#FFFFFF</color>
+    <color name="tag_selected_bg">#2563EB</color>
+</resources>

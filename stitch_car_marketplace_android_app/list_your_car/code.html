@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>List Your Car - AutoMarket</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#dae2fd",
+            "outline": "#737686",
+            "tertiary": "#46566c",
+            "on-primary-container": "#eeefff",
+            "on-tertiary": "#ffffff",
+            "primary": "#004ac6",
+            "background": "#faf8ff",
+            "primary-fixed": "#dbe1ff",
+            "on-error-container": "#93000a",
+            "on-surface": "#131b2e",
+            "surface-dim": "#d2d9f4",
+            "on-background": "#131b2e",
+            "surface": "#faf8ff",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#b7c8e1",
+            "on-primary-fixed-variant": "#003ea8",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed-variant": "#38485d",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-variant": "#dae2fd",
+            "outline-variant": "#c3c6d7",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed": "#002114",
+            "inverse-primary": "#b4c5ff",
+            "surface-container": "#eaedff",
+            "on-secondary-container": "#00714e",
+            "secondary": "#006c4a",
+            "surface-tint": "#0053db",
+            "surface-container-low": "#f2f3ff",
+            "tertiary-fixed": "#d3e4fe",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-secondary-fixed-variant": "#005137",
+            "secondary-container": "#82f5c1",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#434655",
+            "tertiary-container": "#5e6e85",
+            "on-tertiary-fixed": "#0b1c30",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#85f8c4",
+            "on-tertiary-container": "#e9f0ff",
+            "primary-container": "#2563eb",
+            "surface-bright": "#faf8ff",
+            "surface-container-high": "#e2e7ff",
+            "on-primary-fixed": "#00174b",
+            "secondary-fixed-dim": "#68dba9"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-tablet": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "margin-tablet": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex justify-center">
+<!-- Mobile Android Container Frame -->
+<main class="w-full max-w-md bg-surface-container-lowest min-h-screen flex flex-col relative pb-28 shadow-sm">
+<!-- Android System Status Bar -->
+<header class="w-full h-8 px-space-md pt-space-xs flex items-center justify-between text-on-surface select-none z-50">
+<span class="font-label-md text-label-md tracking-tight">9:41</span>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-base leading-none" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-base leading-none" data-icon="wifi">wifi</span>
+<span class="material-symbols-outlined text-base leading-none" data-icon="battery_full">battery_full</span>
+</div>
+</header>
+<!-- Task App Bar (Linear flow: suppress standard nav, provide focused close + step context) -->
+<section class="sticky top-0 z-40 bg-surface-container-lowest shadow-sm">
+<div class="h-14 px-space-md flex items-center justify-between">
+<button aria-label="Close sell flow" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<div class="flex flex-col items-center flex-1 pr-8">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sell Your Car</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Step 2 of 4: Vehicle &amp; Photos</span>
+</div>
+</div>
+<!-- Linear Step Progress Track (50% filled) -->
+<div class="w-full h-1 bg-surface-container">
+<div class="h-full bg-primary-container w-1/2 transition-all duration-300"></div>
+</div>
+</section>
+<!-- Form & Content Flow -->
+<div class="p-space-md space-y-space-lg flex-1">
+<!-- SECTION 1: High-Contrast Photo Upload Area -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Vehicle Photos</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Add at least 4 photos for optimal buyer trust</p>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold">3/8 Added</span>
+</div>
+<!-- Bento Grid Photo Gallery & Uploader -->
+<div class="grid grid-cols-3 gap-2">
+<!-- Uploaded Thumbnail 1: Front 3/4 -->
+<div class="relative group rounded-xl overflow-hidden aspect-square border border-outline-variant/60 shadow-sm bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A pristine modern metallic gray sedan parked under bright showroom studio lighting with soft diffuse reflections on the hood, shot from a professional front-three-quarter angle, crisp automotive catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYR5MbX0UtvNzgGGRU-hxqd5p_mvyG8oTKMfRBKb8QrFXhmxA3_CJKqzLBluZprxg3972CRAeHJPZiQR2X0NiI6K36gWMp1geTQ_8faXHHthSestkBaipKU6Fngz1IeB0LxnoKEybDaUPfAdeGRqVbvqiUJ38o3Pcq_xpbEH7ixmyTIIkgFayJdgw5kAmJkIfxMILd6ZzcQsnE-vTLLJRzVMcmifK5ruRgb2nbYwEXr81HnLuSxw"/>
+<button aria-label="Delete photo 1" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-inverse-surface/80 hover:bg-inverse-surface text-inverse-on-surface flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</button>
+<span class="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-inverse-surface/75 text-inverse-on-surface rounded font-label-sm text-[10px]">Front</span>
+</div>
+<!-- Uploaded Thumbnail 2: Interior Cockpit -->
+<div class="relative group rounded-xl overflow-hidden aspect-square border border-outline-variant/60 shadow-sm bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A sleek black automotive leather dashboard with high resolution digital infotainment display glowing subtly, leather stitched steering wheel, immaculate clean luxury interior bathed in soft daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv1k1TlYeCyBRed0i5r8LSKGqAPTe1argoNKGm_zGr1E0VivTFzMjN5im-8OBuR_-prfua6KYMqSmbFtLR6MH5hCfsxsh3qxs_mF9R_e-dwZ0th3er57aUkqLI5mNl1PLnZSo7prcNs4IFv1rjiUAQ6z6Pc8uC5sE6-DN2kklZ4vy1dyS-AOnOgOLzYhDl1e8WDjmGYmfPhzescxGLzYGnNDicAAYLgKi2y-FVUOs4dWBeMy6PXA"/>
+<button aria-label="Delete photo 2" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-inverse-surface/80 hover:bg-inverse-surface text-inverse-on-surface flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</button>
+<span class="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-inverse-surface/75 text-inverse-on-surface rounded font-label-sm text-[10px]">Dashboard</span>
+</div>
+<!-- Uploaded Thumbnail 3: Rear Angle -->
+<div class="relative group rounded-xl overflow-hidden aspect-square border border-outline-variant/60 shadow-sm bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="The clean rear view of a modern sports sedan showing sharp LED taillights, dual exhaust tips, clean bumper, and pristine metallic gray paint under crisp daytime lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhbyRTlGwWzgHRwZSjlcOVAvCFl_DTMWbV_58jmDdmjw90TELhgg3j8baBZHyV-3Bi28m8qp646wei_75rL_J-Rl2RrfOq-eNxn6biw6BMJpJYzU7vPbMn6dgxpyFfoBfwUI8r_5s2bltxpOgc5GfMdsBVfw06u_wz5uXhuqnIHaErX3pJeJVjXMfW5puXiXtzwni8v_lkzsMyuVHXZHVWB0A_f1xdJSa8_cJZ8_kbA6emnpekRw"/>
+<button aria-label="Delete photo 3" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-inverse-surface/80 hover:bg-inverse-surface text-inverse-on-surface flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[14px]" data-icon="close">close</span>
+</button>
+<span class="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-inverse-surface/75 text-inverse-on-surface rounded font-label-sm text-[10px]">Rear</span>
+</div>
+</div>
+<!-- High-Contrast Dashed Upload Dropzone -->
+<label class="flex flex-col items-center justify-center p-space-md border-2 border-dashed border-primary/50 hover:border-primary bg-surface-container-low/60 rounded-xl cursor-pointer transition-colors group">
+<input accept="image/*" class="hidden" multiple="" type="file"/>
+<div class="w-11 h-11 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-2 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="add_a_photo">add_a_photo</span>
+</div>
+<span class="font-label-lg text-label-lg text-primary text-center">Add at least 4 photos</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-center mt-0.5">Exterior, Interior, Dashboard, Odometer</span>
+</label>
+</section>
+<!-- SECTION 2: Quick VIN / License Plate Scan Bento Card -->
+<section class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/50 shadow-sm">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="document_scanner">document_scanner</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface leading-tight">Quick Autofill</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Scan or enter registration details</p>
+</div>
+</div>
+<button class="flex items-center gap-1 text-primary hover:text-on-primary-fixed-variant font-label-md text-label-md py-1 px-2 rounded-lg hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-base" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span>Scan</span>
+</button>
+</div>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<input class="w-full h-11 pl-3 pr-8 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:border-primary-container focus:ring-0 focus:outline-none" placeholder="Enter VIN or Plate Number" type="text" value="1HGCR2F83KA029188"/>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-secondary text-base font-bold" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<button class="h-11 px-4 rounded-xl bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-highest active:scale-95 transition-all" type="button">
+            Lookup
+          </button>
+</div>
+</section>
+<!-- SECTION 3: Vehicle Specs Input Fields -->
+<section class="space-y-space-md">
+<h2 class="font-title-md text-title-md text-on-surface">Vehicle Details</h2>
+<!-- Year, Make, Model Field -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Year, Make, Model</label>
+<div class="relative">
+<input class="w-full h-12 px-3 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface font-title-md text-title-md focus:border-primary-container focus:ring-0 focus:outline-none shadow-sm" type="text" value="2019 Honda Accord Sport 2.0T"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="lock">lock</span>
+</div>
+</div>
+<!-- Mileage Input Field -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Mileage</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="speed">speed</span>
+<input class="w-full h-12 pl-10 pr-3 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface font-body-lg text-body-lg focus:border-primary-container focus:ring-0 focus:outline-none shadow-sm" type="text" value="45,200 mi"/>
+</div>
+</div>
+<!-- Vehicle Condition Pills (Single selection chips) -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant">Vehicle Condition</label>
+<button class="text-primary font-label-sm text-label-sm underline" type="button">Condition guide</button>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<!-- Excellent Condition -->
+<label class="flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-outline transition-colors">
+<input class="text-primary focus:ring-0 w-4 h-4 border-outline" name="vehicle_condition" type="radio" value="excellent"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Excellent</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Like new, no wear</span>
+</div>
+</label>
+<!-- Good Condition (Selected) -->
+<label class="flex items-center gap-2.5 p-3 rounded-xl border-2 border-primary bg-primary-fixed/20 cursor-pointer transition-colors shadow-sm">
+<input checked="" class="text-primary focus:ring-0 w-4 h-4" name="vehicle_condition" type="radio" value="good"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold">Good</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Minor cosmetic wear</span>
+</div>
+</label>
+<!-- Fair Condition -->
+<label class="flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-outline transition-colors">
+<input class="text-primary focus:ring-0 w-4 h-4 border-outline" name="vehicle_condition" type="radio" value="fair"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Fair</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Mechanical &amp; body work</span>
+</div>
+</label>
+<!-- Needs Work -->
+<label class="flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-outline transition-colors">
+<input class="text-primary focus:ring-0 w-4 h-4 border-outline" name="vehicle_condition" type="radio" value="needs_work"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Needs Work</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Substantial repairs</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Price Recommendation & Valuation Hint Tool -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-title-md text-title-md text-on-surface">Set Your Asking Price</h2>
+<span class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="trending_up">trending_up</span>
+            High demand in Austin
+          </span>
+</div>
+<!-- Asking Price Input -->
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-headline-lg text-headline-lg text-on-surface-variant">$</span>
+<input class="w-full h-14 pl-9 pr-14 rounded-xl border-2 border-primary-container bg-surface-container-lowest text-on-surface font-headline-lg text-headline-lg focus:ring-0 focus:outline-none shadow-sm" type="text" value="22,500"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 font-label-md text-label-md text-on-surface-variant">USD</span>
+</div>
+<!-- Smart Valuation Hint Card -->
+<div class="rounded-xl p-3.5 bg-surface-container-low border border-outline-variant/60 flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-bold">DriveMarket Value Range</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px]">Great Deal</span>
+</div>
+<p class="font-body-md text-body-md font-semibold text-primary">
+              $21,800 – $23,400
+            </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Based on 14 recent Austin sales of 2019 Honda Accord Sport trims. Pricing at $22,500 attracts 3x more buyer inquiries.
+            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Docked Sticky Bottom Bar -->
+<footer class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 bg-surface-container-lowest/95 backdrop-blur-md px-space-md py-3 border-t border-outline-variant flex items-center justify-between gap-3 shadow-lg">
+<button class="h-12 px-4 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-lg text-label-lg active:scale-95 transition-all" type="button">
+        Save Draft
+      </button>
+<button class="flex-1 h-12 px-6 rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-95 transition-all" type="button">
+<span>Continue to Review</span>
+<span class="material-symbols-outlined text-lg leading-none" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</footer>
+</main>
+</body></html>

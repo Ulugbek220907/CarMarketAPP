@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoMarket - Explore &amp; Browse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#dae2fd",
+            "outline": "#737686",
+            "tertiary": "#46566c",
+            "on-primary-container": "#eeefff",
+            "on-tertiary": "#ffffff",
+            "primary": "#004ac6",
+            "background": "#faf8ff",
+            "primary-fixed": "#dbe1ff",
+            "on-error-container": "#93000a",
+            "on-surface": "#131b2e",
+            "surface-dim": "#d2d9f4",
+            "on-background": "#131b2e",
+            "surface": "#faf8ff",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#b7c8e1",
+            "on-primary-fixed-variant": "#003ea8",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed-variant": "#38485d",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-variant": "#dae2fd",
+            "outline-variant": "#c3c6d7",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed": "#002114",
+            "inverse-primary": "#b4c5ff",
+            "surface-container": "#eaedff",
+            "on-secondary-container": "#00714e",
+            "secondary": "#006c4a",
+            "surface-tint": "#0053db",
+            "surface-container-low": "#f2f3ff",
+            "tertiary-fixed": "#d3e4fe",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-secondary-fixed-variant": "#005137",
+            "secondary-container": "#82f5c1",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#434655",
+            "tertiary-container": "#5e6e85",
+            "on-tertiary-fixed": "#0b1c30",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#85f8c4",
+            "on-tertiary-container": "#e9f0ff",
+            "primary-container": "#2563eb",
+            "surface-bright": "#faf8ff",
+            "surface-container-high": "#e2e7ff",
+            "on-primary-fixed": "#00174b",
+            "secondary-fixed-dim": "#68dba9"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-tablet": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "margin-tablet": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+            "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "display-lg": ["36px", {"lineHeight": "44px", "fontWeight": "700"}],
+            "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+            "title-md": ["16px", {"lineHeight": "22px", "fontWeight": "600"}],
+            "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+            "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "600"}],
+            "display-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex justify-center antialiased selection:bg-primary-fixed">
+<!-- Mobile Android Container Phone Canvas Frame -->
+<div class="w-full max-w-md bg-surface flex flex-col min-h-screen relative shadow-2xl pb-24">
+<!-- Android OS System Status Bar -->
+<div class="w-full h-7 px-4 flex items-center justify-between text-on-surface bg-surface-container-lowest border-b border-outline-variant/40 select-none text-[11px] font-semibold tracking-tight z-50">
+<span>9:41</span>
+<div class="flex items-center space-x-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px]" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="wifi">wifi</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="battery_full">battery_full</span>
+</div>
+</div>
+<!-- TopAppBar (Shared Component Implementation) -->
+<header class="sticky top-0 z-40 flex items-center justify-between px-space-md h-14 w-full bg-surface-container-lowest dark:bg-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="directions_car">directions_car</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-primary-fixed tracking-tight">AutoMarket</span>
+</div>
+<!-- Location Selector Pill -->
+<button class="flex items-center space-x-1 px-space-sm py-1 rounded-full bg-surface-container text-on-surface hover:bg-surface-container-highest transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="location_on">location_on</span>
+<span class="text-label-sm font-label-sm font-semibold">Austin, TX</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</button>
+<!-- Trailing Action -->
+<div class="flex items-center">
+<button aria-label="Notifications" class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform duration-150 relative" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+</button>
+</div>
+</header>
+<!-- Main Scrollable Content Canvas -->
+<main class="flex-1 flex flex-col px-space-md pt-space-sm space-y-space-md">
+<!-- Search Input Section -->
+<section class="flex items-center space-x-space-sm">
+<div class="flex-1 flex items-center h-[52px] px-space-md rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px] mr-2.5" data-icon="search">search</span>
+<input class="w-full bg-transparent border-0 p-0 text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" placeholder="Search make, model, or body type..." type="text"/>
+</div>
+<button aria-label="Filter" class="h-[52px] w-[52px] flex items-center justify-center rounded-xl bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container active:scale-95 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="tune">tune</span>
+</button>
+</section>
+<!-- Primary Vehicle Category Chips (Horizontally Scrollable) -->
+<section class="overflow-x-auto no-scrollbar -mx-space-md px-space-md py-1">
+<div class="flex items-center space-x-space-sm whitespace-nowrap">
+<!-- Active Filter Chip -->
+<button class="h-9 px-4 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center space-x-1.5 shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+<span>All</span>
+</button>
+<!-- Inactive Chips -->
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>SUV</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>Sedan</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>Electric</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>Truck</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>Luxury</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md active:scale-95 transition-all" type="button">
+<span>Hybrid</span>
+</button>
+</div>
+</section>
+<!-- Quick Secondary Budget Filter Chips -->
+<section class="overflow-x-auto no-scrollbar -mx-space-md px-space-md py-0.5">
+<div class="flex items-center space-x-2 whitespace-nowrap">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-colors flex items-center space-x-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="sell">sell</span>
+<span>Under $15k</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-colors flex items-center space-x-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="payments">payments</span>
+<span>Under $25k</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-colors flex items-center space-x-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="speed">speed</span>
+<span>Low Mileage</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-colors flex items-center space-x-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="verified">verified</span>
+<span>Certified</span>
+</button>
+</div>
+</section>
+<!-- Section Header -->
+<section class="flex items-center justify-between pt-1">
+<div class="flex items-baseline space-x-2">
+<h2 class="text-headline-md font-headline-md text-on-surface">Featured Listings</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">(1,420 cars)</span>
+</div>
+<button class="flex items-center space-x-1 text-label-md font-label-lg text-primary hover:text-on-primary-fixed-variant transition-colors" type="button">
+<span>Recommended</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_drop_down">arrow_drop_down</span>
+</button>
+</section>
+<!-- Vertical Car Listing Feed -->
+<div class="flex flex-col space-y-space-md">
+<!-- Card 1: Tesla Model 3 -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative w-full h-48 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Modern pearl white electric sports sedan parked on a sleek sunlit architectural terrace with reflective concrete ground. High-key natural daylight highlights pristine vehicle curves with clean reflections and sharp aerodynamic details. Minimalist European styling aesthetic in an automotive showroom setting with cool slate gray shadows and bright crisp tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASIcvz8o5wHM9TLMZQ9gI95nLuCRV0EpDvx7GN6cssAC01hOswbxDj9lth76FWsk8iKkjltA8eCGMMPLpxyhItMFkul6L4VGfd37oBbm7B7ioq0xSN5XNnyehlEI-T33-e9nAV7-3YawXnG1YTL4gb9BFnOLdmWvWek_fBsuPNE2Rt1Vv2irn8lvUoSNQSyioy-IoVNgON-biRRquZ14zji-6HwUZ4YKA4qFBUC5Ktnix2_WRzEg"/>
+<!-- Top Floating Badges -->
+<div class="absolute top-3 left-3 flex items-center space-x-1.5">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-secondary text-on-secondary text-label-sm font-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="thumb_up">thumb_up</span>
+<span>Great Deal</span>
+</span>
+</div>
+<!-- Heart Action -->
+<button aria-label="Save listing" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm flex items-center justify-center text-on-surface hover:text-error active:scale-90 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite_border">favorite_border</span>
+</button>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface text-label-sm font-label-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="photo_camera">photo_camera</span>
+<span>18</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col space-y-space-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-md font-title-md text-on-surface">2022 Tesla Model 3</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Long Range Dual Motor</p>
+</div>
+<div class="text-right">
+<div class="text-headline-md font-headline-md text-primary">$31,450</div>
+<div class="text-body-sm font-body-sm text-outline">$482/mo est.</div>
+</div>
+</div>
+<!-- Specs Matrix Chips -->
+<div class="grid grid-cols-3 gap-2 pt-1">
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md text-on-surface">28k mi</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="all_inclusive">all_inclusive</span>
+<span class="text-label-md font-label-md text-on-surface">AWD</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="bolt">bolt</span>
+<span class="text-label-md font-label-md text-on-surface">Electric</span>
+</div>
+</div>
+<!-- Footer Meta & Seller Score -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/40 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="near_me">near_me</span>
+<span>5 miles away</span>
+</div>
+<div class="flex items-center space-x-1 text-on-surface font-label-md">
+<span class="material-symbols-outlined text-[16px] text-[#eab308]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+<span class="text-outline font-normal">(42)</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2: Toyota RAV4 -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative w-full h-48 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Contemporary dark metallic silver compact crossover SUV positioned angled against an elegant architectural urban backdrop in soft afternoon lighting. The modern vehicle body panels shimmer with subtle sky blue reflections. Clean automotive photography style showing off multi-spoke alloy wheels, pristine trim, and dynamic road presence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG53qutER78jPxUOwbwvqQbsVbMD6K1xFiBIfK0OiogWVrlTgE6mdHnB9g8rVGMUySZuF1kRQWIgQi1KXeaQwQSQuPjptN8kr7c7vv-LIFjAgDyPx6RCD8r1ziZNAbl8Vu6AD5IaQYsxV-505dZNkLoUXEdIrRTNVWY1QGFOHCoQFOEGj1bCIG4CDUPQoaVPn4RJPuimN7X5eJFqVtqnl4XEbRTb2GyqwDZb0DUvznhg0rdEy2nQ"/>
+<!-- Top Floating Badges -->
+<div class="absolute top-3 left-3 flex items-center space-x-1.5">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm shadow-sm border border-secondary-fixed-dim">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span>
+<span>Verified Seller</span>
+</span>
+</div>
+<!-- Heart Action (Active State) -->
+<button aria-label="Remove saved listing" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm flex items-center justify-center text-error active:scale-90 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface text-label-sm font-label-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="photo_camera">photo_camera</span>
+<span>24</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col space-y-space-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-md font-title-md text-on-surface">2021 Toyota RAV4</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">XLE Premium Package</p>
+</div>
+<div class="text-right">
+<div class="text-headline-md font-headline-md text-primary">$26,900</div>
+<div class="text-body-sm font-body-sm text-outline">$412/mo est.</div>
+</div>
+</div>
+<!-- Specs Matrix Chips -->
+<div class="grid grid-cols-3 gap-2 pt-1">
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md text-on-surface">34k mi</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="all_inclusive">all_inclusive</span>
+<span class="text-label-md font-label-md text-on-surface">AWD</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="local_gas_station">local_gas_station</span>
+<span class="text-label-md font-label-md text-on-surface">Gasoline</span>
+</div>
+</div>
+<!-- Footer Meta & Distance -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/40 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="near_me">near_me</span>
+<span>12 miles away</span>
+</div>
+<div class="flex items-center space-x-1 text-secondary font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="shield_with_heart">shield_with_heart</span>
+<span>Certified History</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3: BMW 330i M Sport -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="relative w-full h-48 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Deep gloss midnight blue luxury sports executive sedan presented in an open high-end studio with cool ambient lighting. Precision automotive styling displays glossy shadow line exterior trims, sharp aerodynamic front grille, and striking dual LED headlights. Atmospheric studio floor reflections accentuate the crisp European minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi5miDRBKgoYb1KSyl7PuS-lMBfUtBQN8uLJRx9vlsbhdEoJQRiAlYgIsmiG8BoKjne_FJ0tlQMbRGSCNzswptvKDzTJ8vL-YDU2bDcMZdmYA4raMPfMHkbl2vF0Kpf63TsIi7-8eGnfjVpchyN-ZRrtAylKGINc56I6WrEgP_E0EjXDsPCLYaCF7_QUV4iMfNZOG5Jy3iehJ-aXMqdK0M-B3NRLDSlazKeTlrqdD0tWA1u2UBEQ"/>
+<!-- Top Floating Badges -->
+<div class="absolute top-3 left-3 flex items-center space-x-1.5">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="star">star</span>
+<span>Popular</span>
+</span>
+</div>
+<!-- Heart Action -->
+<button aria-label="Save listing" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm flex items-center justify-center text-on-surface hover:text-error active:scale-90 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite_border">favorite_border</span>
+</button>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface text-label-sm font-label-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="photo_camera">photo_camera</span>
+<span>32</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col space-y-space-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-md font-title-md text-on-surface">2020 BMW 330i</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">M Sport Package</p>
+</div>
+<div class="text-right">
+<div class="text-headline-md font-headline-md text-primary">$29,800</div>
+<div class="text-body-sm font-body-sm text-outline">$456/mo est.</div>
+</div>
+</div>
+<!-- Specs Matrix Chips -->
+<div class="grid grid-cols-3 gap-2 pt-1">
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md text-on-surface">41k mi</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md text-on-surface">RWD</span>
+</div>
+<div class="flex items-center space-x-1.5 bg-surface-container-low px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="swap_driving_apps_wheel">swap_driving_apps_wheel</span>
+<span class="text-label-md font-label-md text-on-surface">Automatic</span>
+</div>
+</div>
+<!-- Footer Meta & Distance -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/40 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="near_me">near_me</span>
+<span>8 miles away</span>
+</div>
+<div class="flex items-center space-x-1 text-outline font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+<span>Clean Carfax</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar (Shared Component Strict Implementation) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-space-sm bg-surface-container-lowest dark:bg-surface border-t border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<!-- Destination 1: Explore (Active State Match) -->
+<button class="flex flex-col items-center justify-center bg-primary-fixed dark:bg-primary-container text-on-primary-fixed-variant dark:text-on-primary-container rounded-full px-space-md py-space-xs active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="explore">explore</span>
+<span class="text-label-sm font-label-sm">Explore</span>
+</button>
+<!-- Destination 2: Saved -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-space-md py-space-xs hover:bg-surface-container dark:hover:bg-inverse-surface active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="favorite">favorite</span>
+<span class="text-label-sm font-label-sm">Saved</span>
+</button>
+<!-- Destination 3: Sell (Center Action) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-space-md py-space-xs hover:bg-surface-container dark:hover:bg-inverse-surface active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[24px] text-primary" data-icon="add_circle">add_circle</span>
+<span class="text-label-sm font-label-sm">Sell</span>
+</button>
+<!-- Destination 4: Messages -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-space-md py-space-xs hover:bg-surface-container dark:hover:bg-inverse-surface active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="chat">chat</span>
+<span class="text-label-sm font-label-sm">Messages</span>
+</button>
+<!-- Destination 5: Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-space-md py-space-xs hover:bg-surface-container dark:hover:bg-inverse-surface active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</button>
+</nav>
+</div>
+</body></html>

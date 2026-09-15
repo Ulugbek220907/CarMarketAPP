@@ -1,0 +1,63 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme: DriveMarket Material 3 Design -->
+    <style name="Theme.AutoMarket" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand colors (Cobalt Blue) -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_container</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        
+        <!-- Secondary colors (Emerald Deal Green) -->
+        <item name="colorSecondary">@color/deal_emerald</item>
+        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        
+        <!-- Status bar and Navigation bar -->
+        <item name="android:statusBarColor">@color/surface_container_lowest</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:navigationBarColor">@color/surface_container_lowest</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <!-- Background & Surface -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorSurface">@color/surface_container_lowest</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+
+        <!-- Default font & text styles -->
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
+        
+        <item name="textInputStyle">@style/Widget.DriveMarket.TextInputLayout</item>
+    </style>
+
+    <!-- Custom View Styles -->
+    <style name="Widget.DriveMarket.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary_container</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">@color/primary_container</item>
+        <item name="android:textColorHint">@color/outline</item>
+    </style>
+
+    <!-- Legacy Compatibility -->
+    <style name="Widget.AutoMarket.TextInputLayout" parent="Widget.DriveMarket.TextInputLayout" />
+
+    <style name="AutoMarket.Button.Black" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/btn_primary_blue</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AutoMarket.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:background">@drawable/btn_outlined</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>

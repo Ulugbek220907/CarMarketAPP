@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">DriveMarket</string>
+    <string name="tagline">Modern Automotive Marketplace</string>
+    <string name="location_austin">Austin, TX</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_explore">Explore</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_sell">Sell</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Compatibility aliases -->
+    <string name="nav_market">Explore</string>
+    <string name="nav_favorites">Saved</string>
+    <string name="nav_my_cars">My Listings</string>
+    <string name="nav_post">Sell</string>
+
+    <!-- Explore & Browse -->
+    <string name="search_hint">Search make, model, or body type…</string>
+    <string name="featured_listings">Featured Listings</string>
+    <string name="cars_count_format">(%d cars)</string>
+    <string name="sort_recommended">Recommended</string>
+    <string name="sort_newest">Newest</string>
+    <string name="sort_price_asc">Price: Low to High</string>
+    <string name="sort_price_desc">Price: High to Low</string>
+    <string name="sort_mileage">Lowest Mileage</string>
+    <string name="no_cars_found">No vehicles match your search criteria.</string>
+    <string name="reset_filters">Reset Filters</string>
+    <string name="available_cars_format">%d Vehicles Listed</string>
+
+    <!-- Categories -->
+    <string name="filter_all">All</string>
+    <string name="filter_suv">SUV</string>
+    <string name="filter_sedan">Sedan</string>
+    <string name="filter_electric">Electric</string>
+    <string name="filter_truck">Truck</string>
+    <string name="filter_luxury">Luxury</string>
+    <string name="filter_hybrid">Hybrid</string>
+    <string name="filter_coupe">Coupe</string>
+
+    <!-- Secondary Budget Filters -->
+    <string name="filter_under_15k">Under $15k</string>
+    <string name="filter_under_25k">Under $25k</string>
+    <string name="filter_under_30k">Under $30k</string>
+    <string name="filter_low_miles">Low Mileage</string>
+    <string name="filter_certified">Certified</string>
+
+    <!-- Deal Badges & Labels -->
+    <string name="badge_great_deal">Great Deal</string>
+    <string name="badge_fair_price">Fair Price</string>
+    <string name="badge_verified_seller">Verified Seller</string>
+    <string name="badge_clean_carfax">Clean Carfax</string>
+
+    <!-- Vehicle Details -->
+    <string name="vehicle_details_title">Vehicle Details</string>
+    <string name="btn_view_360">360° View</string>
+    <string name="carfax_banner_title">CARFAX Clean Title Verified</string>
+    <string name="carfax_banner_subtitle">No Recall Issues • Clean History</string>
+    <string name="quick_specs_title">Quick Specs</string>
+    <string name="spec_mileage_label">Mileage</string>
+    <string name="spec_transmission_label">Transmission</string>
+    <string name="spec_drive_label">Drive Type</string>
+    <string name="spec_history_label">Vehicle History</string>
+    <string name="highlights_title">Highlights &amp; Features</string>
+    <string name="seller_profile_title">Seller Profile</string>
+    <string name="verified_private_seller">Verified Private Seller</string>
+    <string name="replies_fast">Replies &lt; 15 mins</string>
+    <string name="member_since_2021">Member since 2021</string>
+    <string name="action_make_offer">Make Offer</string>
+    <string name="action_contact_seller">Contact Seller</string>
+    <string name="specs_header">VEHICLE SPECIFICATIONS</string>
+    <string name="overview_header">DESCRIPTION &amp; DETAILS</string>
+    <string name="seller_header">SELLER INFORMATION</string>
+    <string name="action_call">Call Seller</string>
+    <string name="action_message">Message Seller</string>
+    <string name="action_delete_listing">Delete Listing</string>
+    <string name="confirm_delete_title">Delete Listing?</string>
+    <string name="confirm_delete_msg">Are you sure you want to permanently delete this car listing?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Chat & Offers -->
+    <string name="chat_title">Chat &amp; Offers</string>
+    <string name="chat_protection">DriveMarket Purchase Protection active. Communicate and negotiate safely in this thread.</string>
+    <string name="official_offer_received">Official Offer Received</string>
+    <string name="offer_expires_in">Expires in 18 hours</string>
+    <string name="offered_amount">Offered Amount</string>
+    <string name="original_list">Original List</string>
+    <string name="escrow_notice">Funds held securely in DriveMarket Escrow</string>
+    <string name="btn_decline_counter">Decline / Counter</string>
+    <string name="btn_accept_offer">Accept Offer</string>
+    <string name="chip_negotiable">Is price negotiable?</string>
+    <string name="chip_test_drive">Schedule test drive</string>
+    <string name="chip_carfax">Request CARFAX</string>
+    <string name="chip_counter">Send counter-offer</string>
+    <string name="chat_input_hint">Type a message or offer…</string>
+
+    <!-- Sell / Post Car Flow -->
+    <string name="sell_car_title">Sell Your Car</string>
+    <string name="sell_step_2">Step 2 of 4: Vehicle &amp; Photos</string>
+    <string name="vehicle_photos_header">Vehicle Photos</string>
+    <string name="vehicle_photos_sub">Add up to 3 high-res photos for optimal buyer trust</string>
+    <string name="add_photos_cta">Add at least 3 photos</string>
+    <string name="photos_hint">Exterior Front, Interior Cockpit, Rear Angle</string>
+    <string name="quick_autofill_title">Quick Autofill</string>
+    <string name="quick_autofill_sub">Scan or enter registration details</string>
+    <string name="vin_plate_hint">Enter VIN or Plate Number</string>
+    <string name="btn_scan">Scan</string>
+    <string name="btn_lookup">Lookup</string>
+    <string name="vehicle_details_header">Vehicle Details</string>
+    <string name="make_label">Year, Make, Model *</string>
+    <string name="make_hint">e.g. 2022 Tesla Model 3 Long Range</string>
+    <string name="mileage_label">Mileage *</string>
+    <string name="mileage_hint">e.g. 28,450 mi</string>
+    <string name="vehicle_condition_label">Vehicle Condition</string>
+    <string name="cond_excellent">Excellent</string>
+    <string name="cond_excellent_sub">Like new, no wear</string>
+    <string name="cond_good">Good</string>
+    <string name="cond_good_sub">Minor cosmetic wear</string>
+    <string name="cond_fair">Fair</string>
+    <string name="cond_fair_sub">Mechanical &amp; body work</string>
+    <string name="cond_needs_work">Needs Work</string>
+    <string name="cond_needs_work_sub">Substantial repairs</string>
+    <string name="ask_price_header">Set Your Asking Price</string>
+    <string name="high_demand_notice">High demand in Austin</string>
+    <string name="price_label">Price ($ USD) *</string>
+    <string name="price_hint">e.g. 31450</string>
+    <string name="valuation_title">DriveMarket Value Range</string>
+    <string name="valuation_range">$30,500 – $32,800</string>
+    <string name="valuation_desc">Based on recent sales in your area. Pricing competitively attracts 3x more buyer inquiries.</string>
+    <string name="btn_save_draft">Save Draft</string>
+    <string name="btn_continue_review">Continue to Review</string>
+    <string name="publish_listing">PUBLISH VEHICLE</string>
+    <string name="missing_fields_error">Please fill in all required fields</string>
+    <string name="listing_created_success">Vehicle successfully published on DriveMarket!</string>
+
+    <!-- Legacy / Post Car Compatibility -->
+    <string name="post_title">Sell Your Car</string>
+    <string name="post_subtitle">Add vehicle specifications &amp; 3 photos</string>
+    <string name="photo_section_title">Vehicle Photos (Up to 3)</string>
+    <string name="photo_1_label">Front</string>
+    <string name="photo_2_label">Cockpit</string>
+    <string name="photo_3_label">Rear</string>
+    <string name="tap_to_add">+ Add Photo</string>
+    <string name="model_label">Model *</string>
+    <string name="model_hint">e.g. Model 3</string>
+    <string name="year_label">Year *</string>
+    <string name="year_hint">e.g. 2022</string>
+    <string name="transmission_label">Transmission</string>
+    <string name="fuel_label">Fuel Type</string>
+    <string name="body_label">Body Style</string>
+    <string name="location_label">Location (City, State)</string>
+    <string name="location_hint">e.g. Austin, TX</string>
+    <string name="description_label">Description</string>
+    <string name="description_hint">Describe condition, maintenance, battery health, features…</string>
+    <string name="seller_name_label">Seller Name</string>
+    <string name="seller_name_hint">e.g. Marcus Chen</string>
+    <string name="seller_phone_label">Contact Phone</string>
+    <string name="seller_phone_hint">e.g. +1 512-555-0192</string>
+    <string name="verified_seller">Verified Seller</string>
+
+    <!-- Empty States -->
+    <string name="empty_favorites_title">No Saved Vehicles</string>
+    <string name="empty_favorites_desc">Tap the heart icon on any vehicle to save it for quick comparison.</string>
+    <string name="empty_listings_title">No Listings Yet</string>
+    <string name="empty_listings_desc">You have not listed any vehicles yet. Tap below to post your first vehicle.</string>
+    <string name="post_first_car">List a Vehicle Now</string>
+</resources>

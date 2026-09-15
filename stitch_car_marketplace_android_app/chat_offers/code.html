@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Chat &amp; Offers - AutoMarket</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#dae2fd",
+            "outline": "#737686",
+            "tertiary": "#46566c",
+            "on-primary-container": "#eeefff",
+            "on-tertiary": "#ffffff",
+            "primary": "#004ac6",
+            "background": "#faf8ff",
+            "primary-fixed": "#dbe1ff",
+            "on-error-container": "#93000a",
+            "on-surface": "#131b2e",
+            "surface-dim": "#d2d9f4",
+            "on-background": "#131b2e",
+            "surface": "#faf8ff",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#b7c8e1",
+            "on-primary-fixed-variant": "#003ea8",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed-variant": "#38485d",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-variant": "#dae2fd",
+            "outline-variant": "#c3c6d7",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed": "#002114",
+            "inverse-primary": "#b4c5ff",
+            "surface-container": "#eaedff",
+            "on-secondary-container": "#00714e",
+            "secondary": "#006c4a",
+            "surface-tint": "#0053db",
+            "surface-container-low": "#f2f3ff",
+            "tertiary-fixed": "#d3e4fe",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-secondary-fixed-variant": "#005137",
+            "secondary-container": "#82f5c1",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#434655",
+            "tertiary-container": "#5e6e85",
+            "on-tertiary-fixed": "#0b1c30",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#85f8c4",
+            "on-tertiary-container": "#e9f0ff",
+            "primary-container": "#2563eb",
+            "surface-bright": "#faf8ff",
+            "surface-container-high": "#e2e7ff",
+            "on-primary-fixed": "#00174b",
+            "secondary-fixed-dim": "#68dba9"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-tablet": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "margin-tablet": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    /* Custom scrollbar hiding for crisp mobile presentation */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .elevation-ambient {
+      box-shadow: 0px 2px 6px -1px rgba(15, 23, 42, 0.04), 0px 4px 12px -2px rgba(15, 23, 42, 0.03);
+    }
+    .elevation-sheet {
+      box-shadow: 0px 8px 24px -4px rgba(15, 23, 42, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Screen Frame Container (Fluid 4-column Android Phone Spec) -->
+<div class="mx-auto max-w-md min-h-screen flex flex-col bg-surface border-x border-outline-variant relative overflow-hidden">
+<!-- Android OS Top Status Bar (M3 Spec) -->
+<div class="h-6 w-full px-space-md flex justify-between items-center bg-surface-container-lowest text-on-surface z-50 text-[12px] font-medium pt-1">
+<span class="font-semibold tracking-tight">10:19</span>
+<div class="flex items-center space-x-1.5 opacity-80">
+<span class="material-symbols-outlined text-[15px]" data-icon="network_wifi">network_wifi</span>
+<span class="material-symbols-outlined text-[15px]" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[15px]" data-icon="battery_full">battery_full</span>
+</div>
+</div>
+<!-- Screen Navigation Header / Seller Profile Header -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md px-space-md py-2.5 flex items-center justify-between border-b border-outline-variant shadow-sm transition-all">
+<div class="flex items-center space-x-3 min-w-0">
+<!-- Back Navigation Button -->
+<button aria-label="Back" class="p-1 rounded-full text-on-surface hover:bg-surface-container active:scale-95 transition-transform duration-150 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[24px]" data-icon="arrow_back">arrow_back</span>
+</button>
+<!-- Seller Identity Info -->
+<div class="flex items-center space-x-2.5 min-w-0">
+<div class="relative flex-shrink-0">
+<img alt="Marcus Chen" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Close-up professional portrait of Marcus Chen, a trusted automotive seller in his mid-30s wearing a modern casual blazer, warm and friendly studio lighting, clean background, sharp focus, high trust vibe consistent with European minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6IFh1wTCEljct__FPdZbhWRjEGagt38wd0AtCHGBoLIES4DGZuLgPEjghwn92IYgX8kpU380Kfaq0u1FzHbV36TzurtbrmFvUFiQzzN8S6gZWHC-gscEjBiZZYVNjxaY4S5rNN2bEjMdfwAmDmmf2BuvAG1jHPJKjKumUibKE44VLMxci3FmtxADp0zKTy13sb1_KLJMiEdRahQAv690D0awoCjYiXFRdJ_-R1Z4N89fwQTCpRQ"/>
+<!-- Active Green Online Indicator -->
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full ring-2 ring-surface-container-lowest" title="Online now"></span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center space-x-1.5">
+<h1 class="font-title-md text-title-md text-on-surface truncate">Marcus Chen</h1>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center space-x-1">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Response time ~10 min</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Header Trailing Action Buttons -->
+<div class="flex items-center space-x-1 flex-shrink-0">
+<button aria-label="Call seller" class="w-9 h-9 flex items-center justify-center rounded-full text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="call">call</span>
+</button>
+<button aria-label="More options" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Contextual Pinned Listing Card (Below Header) -->
+<div class="bg-surface-container-low px-space-md py-2.5 border-b border-outline-variant flex items-center justify-between gap-3 shadow-sm relative z-30">
+<div class="flex items-center space-x-3 min-w-0">
+<div class="relative w-14 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container border border-outline-variant">
+<img alt="2022 Tesla Model 3 Long Range" class="w-full h-full object-cover" data-alt="Studio quality automotive photography of a 2022 Tesla Model 3 Long Range in metallic pearl white paint, high key lighting, crisp reflections, parked in a minimalist clean European showroom with neutral slate flooring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZxDt-N_NOnVXaa0u01DqpfPyKG1_jW0w9VTXhGKdf4eoIKieeVzSrhnqeO_vDAKjWCKd_3D-iDEWEK3euL8yq5yDsNLn-TnzGpBUCiJq6mcRJju2rwaSVItkVMsDGmq2VwUDLH6jpC3164OPOAQCd8wgSqqnu0isH0Xr9JBk4eXG_YmK6ZYDbYGYSq3RgzwFv9xjk6zPLnc3NfMBMkOmTDYeRWZpwJGJ8X74dTy2wjpLWhiIxhA"/>
+</div>
+<div class="min-w-0">
+<div class="flex items-center space-x-2">
+<h2 class="font-label-lg text-label-lg text-on-surface truncate">2022 Tesla Model 3 Long Range</h2>
+</div>
+<div class="flex items-center space-x-2 mt-0.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$31,450</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container-highest text-primary">
+              Listed • Active
+            </span>
+</div>
+</div>
+</div>
+<button class="px-2.5 py-1.5 rounded-lg text-primary text-label-md font-label-md border border-outline-variant bg-surface-container-lowest hover:bg-surface-container active:scale-95 transition-all flex items-center space-x-1 flex-shrink-0" type="button">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Message Bubble Stream & Offer Interactive Area -->
+<main class="flex-1 overflow-y-auto px-space-md py-4 space-y-4 bg-surface flex flex-col justify-start">
+<!-- Conversation Date Header Badge -->
+<div class="flex justify-center my-1">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm shadow-sm">
+          Today, 10:14 AM
+        </span>
+</div>
+<!-- Trust & Safe Transaction Security Banner -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-2.5 flex items-center space-x-2.5 text-on-surface-variant elevation-ambient">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="shield">shield</span>
+</div>
+<p class="font-body-sm text-body-sm leading-tight text-on-surface-variant">
+          AutoMarket Purchase Protection active. Communicate and negotiate safely in this thread.
+        </p>
+</div>
+<!-- 1. Buyer Message (Right aligned, Primary container) -->
+<div class="flex flex-col items-end space-y-1 pl-10">
+<div class="bg-primary-container text-on-primary rounded-2xl rounded-tr-xs px-4 py-3 shadow-sm">
+<p class="font-body-md text-body-md text-white">
+            Hi Marcus, is the car still available? Clean title in hand?
+          </p>
+</div>
+<div class="flex items-center space-x-1 pr-1">
+<span class="font-body-sm text-[11px] text-outline">10:14 AM</span>
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="done_all">done_all</span>
+</div>
+</div>
+<!-- 2. Seller Reply Message (Left aligned, Neutral surface-container-lowest) -->
+<div class="flex items-end space-x-2 pr-10">
+<img alt="Marcus" class="w-7 h-7 rounded-full object-cover flex-shrink-0 border border-outline-variant" data-alt="Close-up portrait of seller Marcus Chen with friendly reassuring expression in clean bright daylight, automotive showroom setting in background with modern neutral styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxW9-fzOsnWmqN8Kqtheb3YZLQNX31suMZgkaKV3duHvIs4rabodznaTltJ6e4NaJOb4Q7iw8w2zXiRx4-eXsuQWAyBtnuQkMb-acQNg0Z8wQAoI9N5zYumc9kZfq9wp4dn4sDXp1KnFp6bCaFxyRMnYkpUD-INluxczgnxKUOQpbs9FDihgxsfcL_iS_IbItLbWKvQRtZ8jBu9GCKi7jhptZ5Ro-kl1CgCEO4Z0zCT72iX-gGdQ"/>
+<div class="flex flex-col space-y-1">
+<div class="bg-surface-container-lowest text-on-surface border border-outline-variant rounded-2xl rounded-tl-xs px-4 py-3 elevation-ambient">
+<p class="font-body-md text-body-md text-on-surface">
+              Hi Alex! Yes, title is clean and ready. Battery health is at 96%.
+            </p>
+</div>
+<span class="font-body-sm text-[11px] text-outline pl-1">10:17 AM</span>
+</div>
+</div>
+<!-- 3. System Activity Notification Bubble -->
+<div class="flex justify-center my-1.5">
+<div class="inline-flex items-center space-x-1.5 bg-surface-container-high px-3 py-1.5 rounded-full text-on-surface-variant font-label-sm text-label-sm border border-outline-variant/60">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="price_change">price_change</span>
+<span>Alex made an offer of <strong class="text-on-surface font-semibold">$29,800</strong></span>
+</div>
+</div>
+<!-- 4. Built-in Official Offer Card Banner (In Message Stream) -->
+<div class="w-full bg-surface-container-lowest rounded-2xl border-2 border-primary-fixed-dim elevation-sheet overflow-hidden my-2">
+<!-- Top Banner Header with Status and Timer -->
+<div class="bg-surface-container-low px-4 py-2.5 flex items-center justify-between border-b border-outline-variant">
+<div class="flex items-center space-x-1.5">
+<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-primary text-on-primary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[13px]" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Official Offer Received</span>
+</span>
+</div>
+<div class="flex items-center space-x-1 text-tertiary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[15px]" data-icon="schedule">schedule</span>
+<span>Expires in 18 hours</span>
+</div>
+</div>
+<!-- Offer Main Content -->
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-baseline">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Offered Amount</span>
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">$29,800</span>
+<span class="font-label-md text-label-md text-error bg-error-container/40 px-2 py-0.5 rounded">
+                  -$1,650 below asking
+                </span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-outline block">Original List</span>
+<span class="font-label-lg text-label-lg line-through text-outline">$31,450</span>
+</div>
+</div>
+<!-- Escrow & Security Trust Bar -->
+<div class="bg-surface-container rounded-xl p-2.5 flex items-center justify-between text-[11px] text-on-surface-variant">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="lock">lock</span>
+<span>Funds held securely in AutoMarket Escrow</span>
+</div>
+<span class="font-semibold text-primary">Terms</span>
+</div>
+<!-- Interactive Action Buttons -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<button class="h-11 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container text-label-lg font-label-lg flex items-center justify-center space-x-1 active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync_alt">sync_alt</span>
+<span>Decline / Counter</span>
+</button>
+<button class="h-11 rounded-xl bg-secondary text-on-secondary hover:bg-secondary/90 text-label-lg font-label-lg shadow-sm flex items-center justify-center space-x-1 active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+<span>Accept Offer</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Quick Action Suggestion Chips Container (Above Keyboard Area) -->
+<div class="px-space-md py-2 bg-surface-container-lowest/80 backdrop-blur-sm border-t border-outline-variant/60">
+<div class="flex items-center space-x-2 overflow-x-auto no-scrollbar py-0.5">
+<!-- Quick Chip 1 -->
+<button class="flex-shrink-0 h-9 px-3.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface text-label-md font-label-md hover:bg-surface-container active:scale-95 transition-all flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="help_outline">help_outline</span>
+<span>Is price negotiable?</span>
+</button>
+<!-- Quick Chip 2 -->
+<button class="flex-shrink-0 h-9 px-3.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface text-label-md font-label-md hover:bg-surface-container active:scale-95 transition-all flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="calendar_month">calendar_month</span>
+<span>Schedule test drive</span>
+</button>
+<!-- Quick Chip 3 -->
+<button class="flex-shrink-0 h-9 px-3.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface text-label-md font-label-md hover:bg-surface-container active:scale-95 transition-all flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-tertiary text-[16px]" data-icon="description">description</span>
+<span>Request CARFAX</span>
+</button>
+<!-- Quick Chip 4 -->
+<button class="flex-shrink-0 h-9 px-3.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface text-label-md font-label-md hover:bg-surface-container active:scale-95 transition-all flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="tune">tune</span>
+<span>Send counter-offer</span>
+</button>
+</div>
+</div>
+<!-- Bottom Message Input Dock Bar -->
+<footer class="bg-surface-container-lowest px-space-md py-3 border-t border-outline-variant z-40">
+<div class="flex items-center space-x-2">
+<!-- Attachment / Add Action Button -->
+<button aria-label="Add attachment or image" class="w-11 h-11 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container flex items-center justify-center active:scale-95 transition-transform duration-150 flex-shrink-0 border border-outline-variant" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="add">add</span>
+</button>
+<!-- Message & Offer Input Field -->
+<div class="relative flex-1">
+<input class="w-full h-12 bg-surface-container-lowest text-on-surface placeholder:text-outline text-body-md font-body-md pl-4 pr-10 rounded-xl border border-outline-variant focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" placeholder="Type a message or offer..." type="text"/>
+<!-- Audio Dictation / Mic Icon inside input -->
+<button aria-label="Record voice note" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="mic">mic</span>
+</button>
+</div>
+<!-- Primary Send Button -->
+<button aria-label="Send message" class="w-12 h-12 rounded-xl bg-primary-container text-white flex items-center justify-center shadow-md active:scale-95 hover:bg-primary-container/90 transition-all flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="send">send</span>
+</button>
+</div>
+<!-- Android System Gesture Home Bar Indicator -->
+<div class="w-32 h-1 bg-outline/40 rounded-full mx-auto mt-3"></div>
+</footer>
+</div>
+</body></html>
