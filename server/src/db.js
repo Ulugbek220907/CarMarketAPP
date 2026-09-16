@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const seedData = require('./seedData');
 
 let dbType = 'sqlite';
 let pgPool = null;
@@ -171,50 +170,9 @@ async function initDb() {
     `);
   }
 
-  // Check if cars exist; if empty, seed them
   const rows = await query('SELECT COUNT(*) as count FROM cars');
   const count = parseInt(rows[0].count || rows[0].COUNT || 0, 10);
-
-  if (count === 0) {
-    console.log('[Database] Database is empty. Seeding initial DriveMarket cars...');
-    for (const car of seedData.cars) {
-      await query(`
-        INSERT INTO cars (
-          make, model, trim, year, price, mileage, transmission, fuel_type,
-          body_style, drivetrain, location, distance, description, seller_name,
-          seller_phone, seller_rating, seller_reviews, seller_response, deal_rating,
-          carfax_clean, condition, highlights, photo_1, photo_2, photo_3,
-          is_favorite, is_user_listing, created_at
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14,
-          $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28
-        )
-      `, [
-        car.make, car.model, car.trim, car.year, car.price, car.mileage, car.transmission, car.fuel_type,
-        car.body_style, car.drivetrain, car.location, car.distance, car.description, car.seller_name,
-        car.seller_phone, car.seller_rating, car.seller_reviews, car.seller_response, car.deal_rating,
-        car.carfax_clean, car.condition, car.highlights, car.photo_1, car.photo_2, car.photo_3,
-        car.is_favorite, car.is_user_listing, car.created_at
-      ]);
-    }
-
-    console.log('[Database] Seeding initial chat messages...');
-    for (const msg of seedData.messages) {
-      await query(`
-        INSERT INTO messages (
-          car_id, sender_name, message_text, timestamp, is_from_user,
-          is_system, is_official_offer, offer_amount, original_price
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      `, [
-        msg.car_id, msg.sender_name, msg.message_text, msg.timestamp,
-        msg.is_from_user, msg.is_system, msg.is_official_offer,
-        msg.offer_amount, msg.original_price
-      ]);
-    }
-    console.log('[Database] Seeding completed successfully.');
-  } else {
-    console.log(`[Database] Found ${count} existing vehicles in database.`);
-  }
+  console.log(`[Database] Ready. Total vehicles in database: ${count}`);
 }
 
 module.exports = {

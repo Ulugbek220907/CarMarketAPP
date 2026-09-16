@@ -39,7 +39,7 @@ class CarRepository(private val context: Context) {
         return dbHelper.getCarById(id)
     }
 
-    fun addCar(car: Car): Long {
+    fun addCar(car: Car, onComplete: ((Boolean) -> Unit)? = null): Long {
         val localId = dbHelper.insertCar(car)
         // Push newly created listing to Render backend asynchronously
         scope.launch {
@@ -50,9 +50,19 @@ class CarRepository(private val context: Context) {
                     val serverCar = response.body()!!
                     dbHelper.insertCar(serverCar)
                     Log.d("CarRepository", "Vehicle synced to Render with ID ${serverCar.id}")
+                    withContext(Dispatchers.Main) {
+                        onComplete?.invoke(true)
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onComplete?.invoke(false)
+                    }
                 }
             } catch (e: Exception) {
                 Log.w("CarRepository", "Failed to sync created vehicle to Render: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    onComplete?.invoke(false)
+                }
             }
         }
         return localId
@@ -110,21 +120,15 @@ class CarRepository(private val context: Context) {
         return localId
     }
 
-    fun seedChatIfEmpty(carId: Long, sellerName: String, listPrice: Double) {
-        dbHelper.seedInitialMessagesIfEmpty(carId, sellerName, listPrice)
-    }
-
     // --- Render Backend Synchronization ---
 
     suspend fun refreshCarsFromBackend(): Result<List<Car>> = withContext(Dispatchers.IO) {
         try {
             val api = ApiClient.getService()
             val response = api.getCars()
-            if (response.isSuccessful && response.body() != null) {
-                val serverCars = response.body()!!
-                if (serverCars.isNotEmpty()) {
-                    dbHelper.syncCars(serverCars)
-                }
+            if (response.isSuccessful) {
+                val serverCars = response.body() ?: emptyList()
+                dbHelper.syncCars(serverCars)
                 Result.success(serverCars)
             } else {
                 Result.failure(Exception("HTTP ${response.code()}: ${response.errorBody()?.string()}"))
@@ -138,11 +142,9 @@ class CarRepository(private val context: Context) {
         try {
             val api = ApiClient.getService()
             val response = api.getMessages(carId)
-            if (response.isSuccessful && response.body() != null) {
-                val serverMessages = response.body()!!
-                if (serverMessages.isNotEmpty()) {
-                    dbHelper.syncMessages(carId, serverMessages)
-                }
+            if (response.isSuccessful) {
+                val serverMessages = response.body() ?: emptyList()
+                dbHelper.syncMessages(carId, serverMessages)
                 Result.success(serverMessages)
             } else {
                 Result.failure(Exception("HTTP ${response.code()}: ${response.errorBody()?.string()}"))

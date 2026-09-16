@@ -22,6 +22,8 @@ import com.automarket.app.data.model.Car
 import com.automarket.app.data.model.ChatMessage
 import com.automarket.app.databinding.ActivityChatOffersBinding
 import com.automarket.app.util.ImageUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class ChatOffersActivity : AppCompatActivity() {
@@ -120,35 +122,76 @@ class ChatOffersActivity : AppCompatActivity() {
         }
     }
 
+    private var pollingJob: kotlinx.coroutines.Job? = null
+    private var lastMessageCount = 0
+
     private fun loadMessages() {
         val c = car ?: return
         val messages = repository.getMessagesForCar(c.id)
-        binding.llDynamicMessages.removeAllViews()
-
-        for (msg in messages) {
-            renderMessage(msg)
-        }
-        scrollToBottom()
+        displayMessages(messages)
 
         // Sync fresh messages from Render cloud backend
         lifecycleScope.launch {
             val result = repository.refreshMessagesFromBackend(c.id)
             if (result.isSuccess) {
                 val freshMessages = repository.getMessagesForCar(c.id)
-                binding.llDynamicMessages.removeAllViews()
-                for (msg in freshMessages) {
-                    renderMessage(msg)
-                }
-                scrollToBottom()
+                displayMessages(freshMessages)
             }
+        }
+
+        startLiveMessagePolling(c.id)
+    }
+
+    private fun startLiveMessagePolling(carId: Long) {
+        pollingJob?.cancel()
+        pollingJob = lifecycleScope.launch {
+            while (isActive) {
+                delay(4000)
+                val result = repository.refreshMessagesFromBackend(carId)
+                if (result.isSuccess) {
+                    val freshMessages = repository.getMessagesForCar(carId)
+                    if (freshMessages.size != lastMessageCount) {
+                        displayMessages(freshMessages)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        pollingJob?.cancel()
+    }
+
+    private fun displayMessages(messages: List<ChatMessage>) {
+        lastMessageCount = messages.size
+        binding.llDynamicMessages.removeAllViews()
+
+        if (messages.isEmpty()) {
+            val emptyTv = TextView(this).apply {
+                text = "No messages yet.\nSend a message or offer to start the conversation!"
+                textAlignment = View.TEXT_ALIGNMENT_CENTER
+                setTextColor(ContextCompat.getColor(context, R.color.on_surface_variant))
+                textSize = 13f
+                setPadding(0, 32, 0, 32)
+            }
+            binding.llDynamicMessages.addView(emptyTv)
+        } else {
+            for (msg in messages) {
+                renderMessage(msg)
+            }
+            scrollToBottom()
         }
     }
 
     private fun sendUserMessage(text: String) {
         val c = car ?: return
+        val prefs = getSharedPreferences("seller_profile_prefs", MODE_PRIVATE)
+        val sender = prefs.getString("seller_name", "Buyer") ?: "Buyer"
+
         val userMsg = ChatMessage(
             carId = c.id,
-            senderName = "You",
+            senderName = sender,
             messageText = text,
             timestamp = System.currentTimeMillis(),
             isFromUser = true
@@ -156,30 +199,6 @@ class ChatOffersActivity : AppCompatActivity() {
         repository.sendMessage(userMsg)
         renderMessage(userMsg)
         scrollToBottom()
-
-        // Auto seller reply simulation after 1.2 seconds
-        Handler(Looper.getMainLooper()).postDelayed({
-            val replyText = when {
-                text.contains("negotiable", ignoreCase = true) ->
-                    "I am open to reasonable offers close to the asking price! Feel free to submit an official offer."
-                text.contains("test drive", ignoreCase = true) ->
-                    "Sure! I'm available this Saturday morning around Austin South Congress. Does 11 AM work?"
-                text.contains("CARFAX", ignoreCase = true) ->
-                    "Clean CARFAX report is verified and ready. 1 owner with full dealer service records."
-                else ->
-                    "Thanks for reaching out! The ${c.displayTitle} is in great shape. Let me know if you'd like to inspect it in person."
-            }
-            val sellerMsg = ChatMessage(
-                carId = c.id,
-                senderName = c.sellerName,
-                messageText = replyText,
-                timestamp = System.currentTimeMillis(),
-                isFromUser = false
-            )
-            repository.sendMessage(sellerMsg)
-            renderMessage(sellerMsg)
-            scrollToBottom()
-        }, 1200)
     }
 
     private fun renderMessage(msg: ChatMessage) {

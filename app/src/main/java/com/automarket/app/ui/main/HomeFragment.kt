@@ -1,14 +1,15 @@
 package com.automarket.app.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import com.automarket.app.data.model.SortOption
 import com.automarket.app.databinding.FragmentHomeBinding
 import com.automarket.app.ui.adapter.CarAdapter
 import com.automarket.app.ui.detail.CarDetailActivity
+import com.automarket.app.ui.post.PostCarActivity
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -81,16 +83,51 @@ class HomeFragment : Fragment() {
 
     private fun setupTopBar() {
         binding.btnLocationPicker.setOnClickListener {
-            Toast.makeText(requireContext(), "Showing listings in Austin, TX & within 50 miles", Toast.LENGTH_SHORT).show()
+            showLocationPickerDialog()
         }
 
-        binding.btnNotifications.setOnClickListener {
+        binding.btnLocationPicker.setOnLongClickListener {
             showServerConfigDialog()
+            true
         }
 
         binding.btnFilterTune.setOnClickListener {
             showFilterDialog()
         }
+
+        binding.btnPostCarEmpty.setOnClickListener {
+            val intent = Intent(requireContext(), PostCarActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showLocationPickerDialog() {
+        val input = EditText(requireContext()).apply {
+            hint = "e.g. Tashkent, London, New York..."
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Filter by Location")
+            .setMessage("Enter city or region to filter, or clear to view all vehicles:")
+            .setView(input)
+            .setPositiveButton("Filter") { _, _ ->
+                val loc = input.text.toString().trim()
+                if (loc.isNotEmpty()) {
+                    binding.tvCurrentLocation.text = loc
+                    currentFilter = currentFilter.copy(searchQuery = loc)
+                } else {
+                    binding.tvCurrentLocation.text = "All Locations"
+                    currentFilter = currentFilter.copy(searchQuery = "")
+                }
+                loadCars()
+            }
+            .setNeutralButton("All Locations") { _, _ ->
+                binding.tvCurrentLocation.text = "All Locations"
+                currentFilter = currentFilter.copy(searchQuery = "")
+                loadCars()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showServerConfigDialog() {

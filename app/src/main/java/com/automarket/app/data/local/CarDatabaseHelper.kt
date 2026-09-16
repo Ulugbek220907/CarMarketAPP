@@ -15,7 +15,7 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
     companion object {
         const val DATABASE_NAME = "drivemarket.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
 
         // Cars Table
         const val TABLE_CARS = "cars"
@@ -163,7 +163,18 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val db = writableDatabase
         db.beginTransaction()
         try {
+            // Keep local favorites status
+            val favCursor = db.rawQuery("SELECT $COL_ID FROM $TABLE_CARS WHERE $COL_IS_FAVORITE = 1", null)
+            val favIds = mutableSetOf<Long>()
+            while (favCursor.moveToNext()) {
+                favIds.add(favCursor.getLong(0))
+            }
+            favCursor.close()
+
+            db.delete(TABLE_CARS, null, null)
+
             for (car in cars) {
+                val isFav = car.isFavorite || favIds.contains(car.id)
                 val values = ContentValues().apply {
                     if (car.id > 0) put(COL_ID, car.id)
                     put(COL_MAKE, car.make)
@@ -191,7 +202,7 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
                     put(COL_PHOTO_1, car.photo1)
                     put(COL_PHOTO_2, car.photo2)
                     put(COL_PHOTO_3, car.photo3)
-                    put(COL_IS_FAVORITE, if (car.isFavorite) 1 else 0)
+                    put(COL_IS_FAVORITE, if (isFav) 1 else 0)
                     put(COL_IS_USER_LISTING, if (car.isUserListing) 1 else 0)
                     put(COL_CREATED_AT, car.createdAt)
                 }
@@ -382,53 +393,10 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         return list
     }
 
-    fun seedInitialMessagesIfEmpty(carId: Long, sellerName: String, listPrice: Double) {
-        val current = getMessagesForCar(carId)
-        if (current.isEmpty()) {
-            val now = System.currentTimeMillis()
-            // 1. Buyer opening
-            insertMessage(
-                ChatMessage(
-                    carId = carId,
-                    senderName = "Alex",
-                    messageText = "Hi $sellerName, is the car still available? Clean title in hand?",
-                    timestamp = now - (1000L * 60 * 25),
-                    isFromUser = true
-                )
-            )
-            // 2. Seller response
-            insertMessage(
-                ChatMessage(
-                    carId = carId,
-                    senderName = sellerName,
-                    messageText = "Hi Alex! Yes, title is clean and ready. Battery health is tested at 96%.",
-                    timestamp = now - (1000L * 60 * 22),
-                    isFromUser = false
-                )
-            )
-            // 3. System offer notification
-            insertMessage(
-                ChatMessage(
-                    carId = carId,
-                    senderName = "System",
-                    messageText = "Alex made an offer of $29,800",
-                    timestamp = now - (1000L * 60 * 18),
-                    isSystemNotification = true
-                )
-            )
-            // 4. Official Offer Card
-            insertMessage(
-                ChatMessage(
-                    carId = carId,
-                    senderName = "Official Offer",
-                    messageText = "Official Offer Received",
-                    timestamp = now - (1000L * 60 * 15),
-                    isOfficialOffer = true,
-                    offerAmount = 29800.0,
-                    originalListPrice = listPrice
-                )
-            )
-        }
+    fun clearAllData() {
+        val db = writableDatabase
+        db.delete(TABLE_MESSAGES, null, null)
+        db.delete(TABLE_CARS, null, null)
     }
 
     private fun cursorToCar(cursor: Cursor): Car {
