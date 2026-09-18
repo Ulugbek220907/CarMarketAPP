@@ -35,32 +35,15 @@ class CarAdapter(
 
         fun bind(car: Car) {
             binding.tvCarTitle.text = car.displayTitle
-            binding.tvCarSubtitle.text = car.displaySubtitle
             binding.tvPrice.text = car.formattedPrice
-            binding.tvMonthlyPayment.text = car.formattedMonthlyPayment
+            binding.tvCarSpecs.text = car.specsSummary
+            binding.tvLocation.text = if (car.location.isNotBlank()) car.location else "Available"
+            binding.tvSellerName.text = if (car.sellerName.isNotBlank()) "Seller: ${car.sellerName}" else ""
 
-            // Deal Rating Badge
-            if (car.dealRating.isNotBlank()) {
-                binding.tvDealRating.text = car.dealRating
-                binding.dealBadgeContainer.visibility = View.VISIBLE
-            } else {
-                binding.dealBadgeContainer.visibility = View.GONE
-            }
-
-            // Specs Matrix
-            binding.tvSpecMileage.text = car.formattedMileage
-            binding.tvSpecDrive.text = if (car.drivetrain.isNotBlank()) car.drivetrain else car.transmission
-            binding.tvSpecFuel.text = car.fuelType
-
-            // Distance & Rating
-            binding.tvDistance.text = car.distance
-            binding.tvRating.text = "${car.sellerRating}"
-            binding.tvReviews.text = "(${car.sellerReviewCount})"
-
-            // Photo count & Image
             val photos = car.getPhotos()
-            val count = if (photos.isNotEmpty()) photos.size else 3
+            val count = if (photos.isNotEmpty()) photos.size else 0
             binding.tvPhotoCount.text = "$count"
+            binding.photoBadgeContainer.visibility = if (count > 0) View.VISIBLE else View.GONE
 
             ImageUtils.loadImage(
                 imageView = binding.ivCarImage,
@@ -68,7 +51,6 @@ class CarAdapter(
                 pathOrUri = photos.firstOrNull()
             )
 
-            // Bookmark icon
             updateBookmarkIcon(car.isFavorite)
 
             binding.btnBookmark.setOnClickListener {

@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/app_name"
-                android:textColor="@color/primary_container"
+                android:textColor="@color/on_surface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -75,7 +75,7 @@
         android:layout_height="1dp"
         android:background="@color/outline_variant" />
 
-    <!-- Search Bar & Filter Action -->
+    <!-- Search Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,11 +85,9 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="10dp">
 
-        <!-- Search Input Box (52dp height, 12dp rounded) -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:background="@drawable/bg_card_rounded"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -125,203 +123,14 @@
                 android:visibility="gone"
                 app:tint="@color/on_surface_variant" />
         </LinearLayout>
-
-        <!-- Tune / Filter Action Button -->
-        <FrameLayout
-            android:id="@+id/btnFilterTune"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_card_rounded"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_tune"
-                app:tint="@color/on_surface" />
-        </FrameLayout>
     </LinearLayout>
-
-    <!-- Primary Vehicle Category Chips (Horizontally Scrollable) -->
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface_container_lowest"
-        android:overScrollMode="never"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="8dp"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:id="@+id/chipGroupPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/chipAll"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_active"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_all"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/chipSuv"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_suv"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/chipSedan"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_sedan"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/chipElectric"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_electric"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/chipTruck"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_truck"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/chipLuxury"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_luxury"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/chipHybrid"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_chip_category_inactive"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/filter_hybrid"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp" />
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <!-- Secondary Budget & Attribute Chips -->
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface_container_lowest"
-        android:overScrollMode="never"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="10dp"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:id="@+id/chipGroupSecondary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/chipUnder15k"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_chip_budget"
-                android:gravity="center"
-                android:paddingHorizontal="12dp"
-                android:text="@string/filter_under_15k"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/chipUnder25k"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_chip_budget"
-                android:gravity="center"
-                android:paddingHorizontal="12dp"
-                android:text="@string/filter_under_25k"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/chipLowMiles"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_chip_budget"
-                android:gravity="center"
-                android:paddingHorizontal="12dp"
-                android:text="@string/filter_low_miles"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/chipCertified"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/bg_chip_budget"
-                android:gravity="center"
-                android:paddingHorizontal="12dp"
-                android:text="@string/filter_certified"
-                android:textColor="@color/deal_emerald"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </HorizontalScrollView>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/outline_variant" />
 
-    <!-- Section Header: Featured Listings & Sort Dropdown -->
+    <!-- Section Header: Available Listings -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -335,47 +144,19 @@
             android:id="@+id/tvFeaturedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/featured_listings"
+            android:text="Available Vehicles"
             android:textColor="@color/on_surface"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCarCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_weight="1"
-            android:textColor="@color/on_surface_variant"
-            android:textSize="13sp"
-            tools:text="(6 cars)" />
-
-        <!-- Sort Button -->
-        <LinearLayout
-            android:id="@+id/btnSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvSortCurrent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sort_recommended"
-                android:textColor="@color/primary_container"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="2dp"
-                android:src="@drawable/ic_location"
-                app:tint="@color/primary_container" />
-        </LinearLayout>
+            android:layout_marginStart="6dp"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="13sp"
+            tools:text="(2 cars)" />
     </LinearLayout>
 
     <!-- Main Feed Container -->
@@ -425,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Be the first to list your car on DriveMarket!"
+                android:text="Post your vehicle and connect with buyers directly."
                 android:textColor="@color/on_surface_variant"
                 android:textSize="13sp" />
 
@@ -436,15 +217,6 @@
                 android:layout_height="44dp"
                 android:layout_marginTop="16dp"
                 android:text="Sell Your Car" />
-
-            <Button
-                android:id="@+id/btnResetFilters"
-                style="@style/AutoMarket.Button.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/reset_filters"
-                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

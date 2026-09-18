@@ -7,7 +7,7 @@
     android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/surface_container_lowest"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
+    app:cardElevation="1dp"
     app:strokeColor="@color/outline_variant"
     app:strokeWidth="1dp">
 
@@ -16,11 +16,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top Image Section with 16:9 aspect ratio -->
+        <!-- Top Image Section (16:9 aspect ratio) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imageContainer"
             android:layout_width="match_parent"
-            android:layout_height="192dp"
+            android:layout_height="200dp"
             android:background="@color/surface_container">
 
             <ImageView
@@ -28,8 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/ic_car_silhouette" />
+                android:scaleType="centerCrop" />
 
             <!-- Fallback Icon if no photo -->
             <LinearLayout
@@ -47,46 +46,14 @@
                     app:tint="@color/outline" />
             </LinearLayout>
 
-            <!-- Floating "Great Deal" Pill (Top Left) -->
-            <LinearLayout
-                android:id="@+id/dealBadgeContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_badge_emerald"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
-                    android:src="@drawable/ic_verified"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:id="@+id/tvDealRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    tools:text="Great Deal" />
-            </LinearLayout>
-
             <!-- Floating Heart / Favorite Button (Top Right) -->
             <FrameLayout
                 android:id="@+id/btnBookmark"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/bg_chip_category_inactive"
+                android:background="@drawable/bg_badge_photo_dark"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -98,11 +65,12 @@
                     android:layout_height="18dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_bookmark"
-                    app:tint="@color/on_surface" />
+                    app:tint="@color/white" />
             </FrameLayout>
 
             <!-- Floating Photo Counter Badge (Bottom Right) -->
             <LinearLayout
+                android:id="@+id/photoBadgeContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
@@ -111,7 +79,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="8dp"
-                android:paddingVertical="3dp"
+                android:paddingVertical="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -144,174 +112,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Title & Subtitle -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvCarTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/on_surface"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    tools:text="2022 Toyota Camry" />
 
-                    <TextView
-                        android:id="@+id/tvCarTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/on_surface"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        tools:text="2022 Tesla Model 3" />
-
-                    <TextView
-                        android:id="@+id/tvCarSubtitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="13sp"
-                        tools:text="Long Range Dual Motor" />
-                </LinearLayout>
-
-                <!-- Price & Monthly Est -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_container"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="$31,450" />
-
-                    <TextView
-                        android:id="@+id/tvMonthlyPayment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@color/outline"
-                        android:textSize="12sp"
-                        tools:text="$482/mo est." />
-                </LinearLayout>
+                    android:layout_marginStart="12dp"
+                    android:textColor="@color/primary_container"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="$24,500" />
             </LinearLayout>
 
-            <!-- 3-Column Spec Matrix Chips -->
-            <LinearLayout
+            <!-- Specs Summary Row: Mileage • Transmission • Body Style -->
+            <TextView
+                android:id="@+id/tvCarSpecs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="4dp"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="13sp"
+                tools:text="31,000 mi • Automatic • Sedan" />
 
-                <!-- Spec 1: Mileage -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_chip_spec"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="7dp">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_speedometer"
-                        app:tint="@color/outline" />
-
-                    <TextView
-                        android:id="@+id/tvSpecMileage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="28k mi" />
-                </LinearLayout>
-
-                <!-- Spec 2: Drivetrain / Transmission -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_chip_spec"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="7dp">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_transmission"
-                        app:tint="@color/outline" />
-
-                    <TextView
-                        android:id="@+id/tvSpecDrive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="AWD" />
-                </LinearLayout>
-
-                <!-- Spec 3: Fuel Type -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_chip_spec"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="7dp">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_bolt"
-                        app:tint="@color/outline" />
-
-                    <TextView
-                        android:id="@+id/tvSpecFuel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="Electric" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Hairline Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:background="@color/outline_variant" />
-
-            <!-- Footer Meta & Distance / Score -->
+            <!-- Location Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -319,7 +156,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Distance -->
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
@@ -327,46 +163,22 @@
                     app:tint="@color/outline" />
 
                 <TextView
-                    android:id="@+id/tvDistance"
+                    android:id="@+id/tvLocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    android:textColor="@color/on_surface_variant"
+                    android:textColor="@color/outline"
                     android:textSize="12sp"
-                    tools:text="5 miles away" />
+                    tools:text="Tashkent" />
 
-                <!-- Star Rating or Clean CARFAX -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvSellerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_star_filled" />
-
-                    <TextView
-                        android:id="@+id/tvRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="4.9" />
-
-                    <TextView
-                        android:id="@+id/tvReviews"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:textColor="@color/outline"
-                        android:textSize="12sp"
-                        tools:text="(42)" />
-                </LinearLayout>
+                    android:textColor="@color/outline"
+                    android:textSize="12sp"
+                    tools:text="Seller: Ulugbek" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

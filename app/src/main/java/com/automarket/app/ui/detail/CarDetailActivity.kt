@@ -2,9 +2,9 @@ package com.automarket.app.ui.detail
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -58,50 +58,26 @@ class CarDetailActivity : AppCompatActivity() {
         }
         currentCar = car
 
-        // Title & Price Section
+        // Title, Price & Location
         binding.tvCarTitle.text = car.displayTitle
-        binding.tvCarSubtitle.text = car.displaySubtitle
         binding.tvPrice.text = car.formattedPrice
-        binding.tvMonthlyEst.text = car.formattedMonthlyPayment
-        binding.tvDealTag.text = car.dealRating
+        binding.tvLocation.text = car.location.ifBlank { "Location not specified" }
 
-        // Quick Specs Bento Grid
-        binding.tvBentoMileage.text = car.formattedMileage
-        binding.tvBentoTrans.text = car.transmission
-        binding.tvBentoDrive.text = if (car.drivetrain.isNotBlank()) car.drivetrain else "All-Wheel Drive"
-        binding.tvBentoFuel.text = "${car.fuelType} Drive"
-
-        // Dynamic Highlights & Features
-        binding.containerHighlights.removeAllViews()
-        val highlights = car.getHighlightsList()
-        for (item in highlights) {
-            val pill = TextView(this).apply {
-                text = "•  $item"
-                textSize = 13f
-                setTextColor(ContextCompat.getColor(context, R.color.on_surface))
-                setBackgroundResource(R.drawable.bg_chip_spec)
-                setPadding(28, 14, 28, 14)
-            }
-            val lp = android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                bottomMargin = 8
-            }
-            binding.containerHighlights.addView(pill, lp)
-        }
+        // Genuine Vehicle Specifications Grid
+        binding.tvSpecYear.text = car.year.toString()
+        binding.tvSpecMileage.text = car.formattedMileage
+        binding.tvSpecTransmission.text = car.transmission.ifBlank { "Automatic" }
+        binding.tvSpecBodyStyle.text = car.bodyStyle.ifBlank { "Sedan" }
 
         // Description Overview
-        binding.tvDescription.text = car.description
+        binding.tvDescription.text = car.description.ifBlank { "No additional details provided." }
 
-        // Seller Profile Card
-        binding.tvSellerName.text = car.sellerName
-        binding.tvSellerRating.text = "${car.sellerRating}"
-        binding.tvSellerSales.text = "${car.sellerReviewCount} sales"
-        binding.tvSellerResponse.text = car.sellerResponseTime
-        binding.tvSellerLocation.text = car.location
+        // Seller Information
+        binding.tvSellerName.text = car.sellerName.ifBlank { "Seller" }
+        binding.tvSellerPhone.text = car.sellerPhone.ifBlank { "Phone not provided" }
+        binding.tvSellerLocation.text = "Location: ${car.location.ifBlank { "Not specified" }}"
 
-        // ViewPager2 photo slider
+        // Photos Slider
         val photos = car.getPhotos()
         val adapter = PhotoSliderAdapter(photos)
         binding.viewPagerPhotos.adapter = adapter
@@ -155,18 +131,22 @@ class CarDetailActivity : AppCompatActivity() {
             }
         }
 
-        binding.btn360View.setOnClickListener {
-            Toast.makeText(this, "Interactive 360° vehicle view ready", Toast.LENGTH_SHORT).show()
-        }
-
-        // Contact Seller & Make Offer both seamlessly launch ChatOffersActivity!
-        binding.btnContactSeller.setOnClickListener {
+        // Call Seller button
+        binding.btnCallSeller.setOnClickListener {
             currentCar?.let { car ->
-                ChatOffersActivity.start(this, car)
+                if (car.sellerPhone.isNotBlank()) {
+                    val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:${car.sellerPhone.trim()}")
+                    }
+                    startActivity(dialIntent)
+                } else {
+                    Toast.makeText(this, "Seller phone number not available", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
-        binding.btnMakeOffer.setOnClickListener {
+        // Chat / Message button
+        binding.btnContactSeller.setOnClickListener {
             currentCar?.let { car ->
                 ChatOffersActivity.start(this, car)
             }

@@ -64,7 +64,7 @@ class ChatOffersActivity : AppCompatActivity() {
     private fun setupHeader() {
         val c = car ?: return
         binding.tvSellerName.text = c.sellerName
-        binding.tvSellerStatus.text = c.sellerResponseTime
+        binding.tvSellerStatus.text = if (c.sellerPhone.isNotBlank()) c.sellerPhone else "Direct Contact"
 
         binding.btnBack.setOnClickListener {
             finish()

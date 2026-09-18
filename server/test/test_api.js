@@ -11,13 +11,13 @@ async function testDatabase() {
   console.log('Testing inserting a real vehicle listing...');
   const res = await db.query(`
     INSERT INTO cars (
-      make, model, trim, year, price, mileage, transmission, fuel_type,
-      body_style, location, distance, description, seller_name, seller_phone,
+      make, model, year, price, mileage, transmission,
+      body_style, location, description, seller_name, seller_phone,
       created_at
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
   `, [
-    'Toyota', 'Camry', 'SE', 2022, 24500.0, 31000, 'Automatic', 'Gasoline',
-    'Sedan', 'Tashkent', 'Local', 'Clean car, 1 owner', 'Ulugbek', '+998901234567',
+    'Toyota', 'Camry', 2022, 24500.0, 31000, 'Automatic',
+    'Sedan', 'Tashkent', 'Clean car, 1 owner', 'Ulugbek', '+998901234567',
     Date.now()
   ]);
 

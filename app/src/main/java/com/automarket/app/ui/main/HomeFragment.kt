@@ -8,20 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.automarket.app.AutoMarketApplication
-import com.automarket.app.R
 import com.automarket.app.data.api.ApiClient
 import com.automarket.app.data.model.CarFilter
-import com.automarket.app.data.model.CategoryFilter
-import com.automarket.app.data.model.SortOption
 import com.automarket.app.databinding.FragmentHomeBinding
 import com.automarket.app.ui.adapter.CarAdapter
 import com.automarket.app.ui.detail.CarDetailActivity
@@ -51,9 +45,6 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
         setupTopBar()
         setupSearch()
-        setupCategoryChips()
-        setupSecondaryChips()
-        setupSort()
         loadCars()
     }
 
@@ -91,10 +82,6 @@ class HomeFragment : Fragment() {
             true
         }
 
-        binding.btnFilterTune.setOnClickListener {
-            showFilterDialog()
-        }
-
         binding.btnPostCarEmpty.setOnClickListener {
             val intent = Intent(requireContext(), PostCarActivity::class.java)
             startActivity(intent)
@@ -114,16 +101,16 @@ class HomeFragment : Fragment() {
                 val loc = input.text.toString().trim()
                 if (loc.isNotEmpty()) {
                     binding.tvCurrentLocation.text = loc
-                    currentFilter = currentFilter.copy(searchQuery = loc)
+                    currentFilter = currentFilter.copy(location = loc)
                 } else {
                     binding.tvCurrentLocation.text = "All Locations"
-                    currentFilter = currentFilter.copy(searchQuery = "")
+                    currentFilter = currentFilter.copy(location = "")
                 }
                 loadCars()
             }
             .setNeutralButton("All Locations") { _, _ ->
                 binding.tvCurrentLocation.text = "All Locations"
-                currentFilter = currentFilter.copy(searchQuery = "")
+                currentFilter = currentFilter.copy(location = "")
                 loadCars()
             }
             .setNegativeButton("Cancel", null)
@@ -174,134 +161,6 @@ class HomeFragment : Fragment() {
         binding.btnClearSearch.setOnClickListener {
             binding.etSearch.text?.clear()
         }
-
-        binding.btnResetFilters.setOnClickListener {
-            binding.etSearch.text?.clear()
-            selectPrimaryChip(CategoryFilter.ALL)
-        }
-    }
-
-    private fun setupCategoryChips() {
-        binding.chipAll.setOnClickListener { selectPrimaryChip(CategoryFilter.ALL) }
-        binding.chipSuv.setOnClickListener { selectPrimaryChip(CategoryFilter.SUV) }
-        binding.chipSedan.setOnClickListener { selectPrimaryChip(CategoryFilter.SEDAN) }
-        binding.chipElectric.setOnClickListener { selectPrimaryChip(CategoryFilter.ELECTRIC) }
-        binding.chipTruck.setOnClickListener { selectPrimaryChip(CategoryFilter.TRUCK) }
-        binding.chipLuxury.setOnClickListener { selectPrimaryChip(CategoryFilter.LUXURY) }
-        binding.chipHybrid.setOnClickListener { selectPrimaryChip(CategoryFilter.HYBRID) }
-    }
-
-    private fun selectPrimaryChip(category: CategoryFilter) {
-        currentFilter = currentFilter.copy(category = category)
-
-        val chips = listOf(
-            binding.chipAll to CategoryFilter.ALL,
-            binding.chipSuv to CategoryFilter.SUV,
-            binding.chipSedan to CategoryFilter.SEDAN,
-            binding.chipElectric to CategoryFilter.ELECTRIC,
-            binding.chipTruck to CategoryFilter.TRUCK,
-            binding.chipLuxury to CategoryFilter.LUXURY,
-            binding.chipHybrid to CategoryFilter.HYBRID
-        )
-
-        for ((chipView, cat) in chips) {
-            if (cat == category) {
-                chipView.setBackgroundResource(R.drawable.bg_chip_category_active)
-                chipView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            } else {
-                chipView.setBackgroundResource(R.drawable.bg_chip_category_inactive)
-                chipView.setTextColor(ContextCompat.getColor(requireContext(), R.color.on_surface))
-            }
-        }
-
-        // Reset secondary chips styling
-        resetSecondaryChips()
-        loadCars()
-    }
-
-    private fun setupSecondaryChips() {
-        binding.chipUnder15k.setOnClickListener {
-            toggleSecondaryFilter(CategoryFilter.UNDER_15K, binding.chipUnder15k)
-        }
-        binding.chipUnder25k.setOnClickListener {
-            toggleSecondaryFilter(CategoryFilter.UNDER_25K, binding.chipUnder25k)
-        }
-        binding.chipLowMiles.setOnClickListener {
-            toggleSecondaryFilter(CategoryFilter.LOW_MILES, binding.chipLowMiles)
-        }
-        binding.chipCertified.setOnClickListener {
-            toggleSecondaryFilter(CategoryFilter.CERTIFIED, binding.chipCertified)
-        }
-    }
-
-    private fun toggleSecondaryFilter(category: CategoryFilter, chipView: TextView) {
-        if (currentFilter.category == category) {
-            selectPrimaryChip(CategoryFilter.ALL)
-        } else {
-            currentFilter = currentFilter.copy(category = category)
-            resetSecondaryChips()
-            chipView.setBackgroundResource(R.drawable.bg_chip_category_active)
-            chipView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            loadCars()
-        }
-    }
-
-    private fun resetSecondaryChips() {
-        binding.chipUnder15k.setBackgroundResource(R.drawable.bg_chip_budget)
-        binding.chipUnder15k.setTextColor(ContextCompat.getColor(requireContext(), R.color.on_surface_variant))
-
-        binding.chipUnder25k.setBackgroundResource(R.drawable.bg_chip_budget)
-        binding.chipUnder25k.setTextColor(ContextCompat.getColor(requireContext(), R.color.on_surface_variant))
-
-        binding.chipLowMiles.setBackgroundResource(R.drawable.bg_chip_budget)
-        binding.chipLowMiles.setTextColor(ContextCompat.getColor(requireContext(), R.color.on_surface_variant))
-
-        binding.chipCertified.setBackgroundResource(R.drawable.bg_chip_budget)
-        binding.chipCertified.setTextColor(ContextCompat.getColor(requireContext(), R.color.deal_emerald))
-    }
-
-    private fun setupSort() {
-        binding.btnSort.setOnClickListener { view ->
-            val popup = PopupMenu(requireContext(), view)
-            popup.menu.add(0, 1, 0, getString(R.string.sort_recommended))
-            popup.menu.add(0, 2, 1, getString(R.string.sort_newest))
-            popup.menu.add(0, 3, 2, getString(R.string.sort_price_asc))
-            popup.menu.add(0, 4, 3, getString(R.string.sort_price_desc))
-            popup.menu.add(0, 5, 4, getString(R.string.sort_mileage))
-
-            popup.setOnMenuItemClickListener { item ->
-                val (sort, label) = when (item.itemId) {
-                    1 -> SortOption.RECOMMENDED to getString(R.string.sort_recommended)
-                    2 -> SortOption.NEWEST to getString(R.string.sort_newest)
-                    3 -> SortOption.PRICE_ASC to getString(R.string.sort_price_asc)
-                    4 -> SortOption.PRICE_DESC to getString(R.string.sort_price_desc)
-                    5 -> SortOption.MILEAGE_ASC to getString(R.string.sort_mileage)
-                    else -> SortOption.RECOMMENDED to getString(R.string.sort_recommended)
-                }
-                binding.tvSortCurrent.text = label
-                currentFilter = currentFilter.copy(sortOption = sort)
-                loadCars()
-                true
-            }
-            popup.show()
-        }
-    }
-
-    private fun showFilterDialog() {
-        val options = arrayOf("All Body Styles", "Electric Vehicles Only", "Under $25,000", "Under 30,000 Miles", "CARFAX Clean Title Only")
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("Quick Filter")
-            .setItems(options) { _, which ->
-                when (which) {
-                    0 -> selectPrimaryChip(CategoryFilter.ALL)
-                    1 -> selectPrimaryChip(CategoryFilter.ELECTRIC)
-                    2 -> toggleSecondaryFilter(CategoryFilter.UNDER_25K, binding.chipUnder25k)
-                    3 -> toggleSecondaryFilter(CategoryFilter.LOW_MILES, binding.chipLowMiles)
-                    4 -> toggleSecondaryFilter(CategoryFilter.CERTIFIED, binding.chipCertified)
-                }
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
     }
 
     fun loadCars() {

@@ -79,10 +79,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero Gallery Slider (16:10 aspect ratio) -->
+            <!-- Hero Gallery Slider -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="250dp"
                 android:background="@color/surface_container">
 
                 <androidx.viewpager2.widget.ViewPager2
@@ -106,75 +106,22 @@
                         app:tint="@color/outline" />
                 </LinearLayout>
 
-                <!-- Top Left: Verified Seller Badge -->
-                <LinearLayout
+                <!-- Photo Counter Indicator -->
+                <TextView
+                    android:id="@+id/tvPhotoIndicator"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_badge_emerald"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_verified"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="@string/badge_verified_seller"
-                        android:textColor="@color/white"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Bottom Bar: 360° View & Photo Counter -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:id="@+id/btn360View"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:background="@drawable/bg_chip_category_inactive"
-                        android:gravity="center"
-                        android:paddingHorizontal="12dp"
-                        android:text="@string/btn_view_360"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/tvPhotoIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:background="@drawable/bg_badge_photo_dark"
-                        android:gravity="center"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="1 / 3" />
-                </LinearLayout>
+                    android:background="@drawable/bg_badge_photo_dark"
+                    android:gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="1 / 3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Main Content Container -->
@@ -184,92 +131,48 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Title & Fair Price Section -->
+                <!-- Title & Price Section -->
+                <TextView
+                    android:id="@+id/tvCarTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/on_surface"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="2022 Tesla Model 3" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/on_surface"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    tools:text="$31,450" />
+
+                <!-- Location Line -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvCarTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/on_surface"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            tools:text="2022 Tesla Model 3" />
-
-                        <TextView
-                            android:id="@+id/tvCarSubtitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="14sp"
-                            tools:text="Long Range Sedan • Dual Motor" />
-                    </LinearLayout>
-
-                    <!-- Fair Price / Great Deal Badge -->
-                    <TextView
-                        android:id="@+id/tvDealTag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_badge_emerald_light"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="@string/badge_fair_price"
-                        android:textColor="@color/deal_emerald"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Price & Monthly Est Row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_location"
+                        app:tint="@color/on_surface_variant" />
 
                     <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/on_surface"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        tools:text="$31,450" />
-
-                    <LinearLayout
+                        android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvMonthlyEst"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_container"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:text="Est. $485/mo" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="72 mo @ 5.4% APR"
-                            android:textColor="@color/outline"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="13sp"
+                        tools:text="Austin, TX" />
                 </LinearLayout>
 
                 <View
@@ -278,76 +181,24 @@
                     android:layout_marginVertical="16dp"
                     android:background="@color/outline_variant" />
 
-                <!-- CARFAX Clean Title Banner -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/surface_container_low"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/outline_variant"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_chip_spec"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_policy"
-                            app:tint="@color/primary_container" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/carfax_banner_title"
-                                android:textColor="@color/on_surface"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="@string/carfax_banner_subtitle"
-                                android:textColor="@color/deal_emerald"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Quick Specs 2x2 Bento Grid -->
+                <!-- Vehicle Specifications Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/quick_specs_title"
+                    android:text="Vehicle Specifications"
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <!-- Clean 2x2 Specs Grid -->
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:columnCount="2"
                     android:useDefaultMargins="false">
 
-                    <!-- Bento Spec 1: Mileage -->
+                    <!-- Year -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -355,7 +206,7 @@
                         android:layout_marginEnd="6dp"
                         android:layout_marginBottom="10dp"
                         app:cardBackgroundColor="@color/surface_container_lowest"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
                         app:strokeColor="@color/outline_variant"
                         app:strokeWidth="1dp">
@@ -366,115 +217,71 @@
                             android:orientation="vertical"
                             android:padding="12dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/spec_mileage_label"
-                                    android:textColor="@color/outline"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_speedometer"
-                                    app:tint="@color/primary_container" />
-                            </LinearLayout>
-
                             <TextView
-                                android:id="@+id/tvBentoMileage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:text="Year"
+                                android:textColor="@color/on_surface_variant"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSpecYear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/on_surface"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                tools:text="2022" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Mileage -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardBackgroundColor="@color/surface_container_lowest"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/outline_variant"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mileage"
+                                android:textColor="@color/on_surface_variant"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSpecMileage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
                                 android:textColor="@color/on_surface"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
                                 tools:text="28,450 mi" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Below market avg"
-                                android:textColor="@color/deal_emerald"
-                                android:textSize="11sp" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Bento Spec 2: Transmission -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginBottom="10dp"
-                        app:cardBackgroundColor="@color/surface_container_lowest"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="@color/outline_variant"
-                        app:strokeWidth="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="12dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/spec_transmission_label"
-                                    android:textColor="@color/outline"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_transmission"
-                                    app:tint="@color/primary_container" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/tvBentoTrans"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:textColor="@color/on_surface"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
-                                tools:text="Single-Speed" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Direct Automatic"
-                                android:textColor="@color/outline"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Bento Spec 3: Drive Type -->
+                    <!-- Transmission -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:layout_marginEnd="6dp"
                         app:cardBackgroundColor="@color/surface_container_lowest"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
                         app:strokeColor="@color/outline_variant"
                         app:strokeWidth="1dp">
@@ -485,56 +292,33 @@
                             android:orientation="vertical"
                             android:padding="12dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/spec_drive_label"
-                                    android:textColor="@color/outline"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_directions_car"
-                                    app:tint="@color/primary_container" />
-                            </LinearLayout>
-
                             <TextView
-                                android:id="@+id/tvBentoDrive"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:text="Transmission"
+                                android:textColor="@color/on_surface_variant"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSpecTransmission"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
                                 android:textColor="@color/on_surface"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                tools:text="Dual Motor AWD" />
-
-                            <TextView
-                                android:id="@+id/tvBentoFuel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:textColor="@color/outline"
-                                android:textSize="11sp"
-                                tools:text="Electric Drive" />
+                                tools:text="Automatic" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Bento Spec 4: Vehicle History -->
+                    <!-- Body Style -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:layout_marginStart="6dp"
                         app:cardBackgroundColor="@color/surface_container_lowest"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
                         app:strokeColor="@color/outline_variant"
                         app:strokeWidth="1dp">
@@ -545,70 +329,37 @@
                             android:orientation="vertical"
                             android:padding="12dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/spec_history_label"
-                                    android:textColor="@color/outline"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_verified"
-                                    app:tint="@color/deal_emerald" />
-                            </LinearLayout>
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="Clean Title"
+                                android:text="Body Style"
+                                android:textColor="@color/on_surface_variant"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSpecBodyStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
                                 android:textColor="@color/on_surface"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="No Accidents / 1 Owner"
-                                android:textColor="@color/deal_emerald"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                tools:text="Sedan" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </GridLayout>
 
-                <!-- Highlights & Features -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/highlights_title"
-                    android:textColor="@color/on_surface"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/containerHighlights"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical" />
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="16dp"
+                    android:background="@color/outline_variant" />
 
                 <!-- Description Overview -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/overview_header"
+                    android:text="Description"
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -621,14 +372,19 @@
                     android:lineSpacingExtra="4dp"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="14sp"
-                    tools:text="Pristine condition pearl white Tesla Model 3 Long Range with Dual Motor AWD." />
+                    tools:text="Car description goes here." />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="16dp"
+                    android:background="@color/outline_variant" />
 
                 <!-- Seller Profile Card -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/seller_profile_title"
+                    android:text="Seller Information"
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -638,7 +394,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     app:cardBackgroundColor="@color/surface_container_lowest"
-                    app:cardCornerRadius="16dp"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:strokeColor="@color/outline_variant"
                     app:strokeWidth="1dp">
@@ -655,25 +411,13 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <!-- Avatar with Online Dot -->
-                            <FrameLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_chip_spec"
-                                    android:padding="10dp"
-                                    android:src="@drawable/ic_nav_profile"
-                                    app:tint="@color/primary_container" />
-
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:layout_gravity="bottom|end"
-                                    android:background="@drawable/bg_badge_emerald" />
-                            </FrameLayout>
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_chip_spec"
+                                android:padding="8dp"
+                                android:src="@drawable/ic_nav_profile"
+                                app:tint="@color/on_surface" />
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -682,116 +426,34 @@
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
-                                <LinearLayout
+                                <TextView
+                                    android:id="@+id/tvSellerName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/tvSellerName"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/on_surface"
-                                        android:textSize="15sp"
-                                        android:textStyle="bold"
-                                        tools:text="Marcus Chen" />
-
-                                    <ImageView
-                                        android:layout_width="14dp"
-                                        android:layout_height="14dp"
-                                        android:layout_marginStart="4dp"
-                                        android:src="@drawable/ic_verified"
-                                        app:tint="@color/deal_emerald" />
-                                </LinearLayout>
+                                    android:textColor="@color/on_surface"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    tools:text="Marcus Chen" />
 
                                 <TextView
+                                    android:id="@+id/tvSellerPhone"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
-                                    android:text="@string/verified_private_seller"
-                                    android:textColor="@color/primary_container"
-                                    android:textSize="11sp"
-                                    android:textStyle="bold" />
+                                    android:textColor="@color/on_surface_variant"
+                                    android:textSize="13sp"
+                                    tools:text="+1 (555) 123-4567" />
                             </LinearLayout>
-
-                            <!-- Rating -->
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="end"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="14dp"
-                                        android:layout_height="14dp"
-                                        android:src="@drawable/ic_star_filled" />
-
-                                    <TextView
-                                        android:id="@+id/tvSellerRating"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="3dp"
-                                        android:textColor="@color/on_surface"
-                                        android:textSize="13sp"
-                                        android:textStyle="bold"
-                                        tools:text="4.9" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:id="@+id/tvSellerSales"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="42 sales"
-                                    android:textColor="@color/outline"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginVertical="12dp"
-                            android:background="@color/outline_variant" />
-
-                        <!-- Details Row: Response Time & Location -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tvSellerResponse"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/replies_fast"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/member_since_2021"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/tvSellerLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/on_surface"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/on_surface_variant"
                             android:textSize="12sp"
-                            android:textStyle="bold"
-                            tools:text="Austin, TX (South Congress)" />
+                            tools:text="Location: Austin, TX" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -821,23 +483,23 @@
         android:paddingHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Secondary Action: Make Offer -->
+        <!-- Secondary Action: Call Seller -->
         <Button
-            android:id="@+id/btnMakeOffer"
+            android:id="@+id/btnCallSeller"
             style="@style/AutoMarket.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:text="@string/action_make_offer" />
+            android:text="@string/action_call" />
 
-        <!-- Primary Action: Contact Seller -->
+        <!-- Primary Action: Chat / Message -->
         <Button
             android:id="@+id/btnContactSeller"
             style="@style/AutoMarket.Button.Black"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1.3"
-            android:text="@string/action_contact_seller" />
+            android:layout_weight="1.2"
+            android:text="@string/action_message" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

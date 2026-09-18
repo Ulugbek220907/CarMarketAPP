@@ -8,26 +8,15 @@ function formatCar(row) {
     id: Number(row.id),
     make: row.make || '',
     model: row.model || '',
-    trim: row.trim || '',
     year: Number(row.year || 0),
     price: Number(row.price || 0),
     mileage: Number(row.mileage || 0),
     transmission: row.transmission || 'Automatic',
-    fuelType: row.fuel_type || 'Gasoline',
     bodyStyle: row.body_style || 'Sedan',
-    drivetrain: row.drivetrain || 'AWD',
     location: row.location || '',
-    distance: row.distance || row.location || '',
     description: row.description || '',
     sellerName: row.seller_name || 'Seller',
     sellerPhone: row.seller_phone || '',
-    sellerRating: Number(row.seller_rating || 4.9),
-    sellerReviewCount: Number(row.seller_reviews || 42),
-    sellerResponseTime: row.seller_response || 'Replies < 15 mins',
-    dealRating: row.deal_rating || 'Great Deal',
-    carfaxClean: Boolean(row.carfax_clean === 1 || row.carfax_clean === true),
-    condition: row.condition || 'Good',
-    highlights: row.highlights || '',
     photo1: row.photo_1 || null,
     photo2: row.photo_2 || null,
     photo3: row.photo_3 || null,
@@ -40,7 +29,7 @@ function formatCar(row) {
 // GET /api/cars - List cars with filters
 router.get('/', async (req, res) => {
   try {
-    const { search, category, sort, favorites, userListings } = req.query;
+    const { search, favorites, userListings, location } = req.query;
 
     let sql = 'SELECT * FROM cars WHERE 1=1';
     const params = [];
@@ -54,35 +43,20 @@ router.get('/', async (req, res) => {
       sql += ` AND is_user_listing = 1`;
     }
 
+    if (location && location.trim().length > 0 && location !== 'All Locations') {
+      sql += ` AND LOWER(location) LIKE $${pIdx}`;
+      params.push(`%${location.trim().toLowerCase()}%`);
+      pIdx++;
+    }
+
     if (search && search.trim().length > 0) {
       const term = `%${search.trim().toLowerCase()}%`;
-      sql += ` AND (LOWER(make) LIKE $${pIdx} OR LOWER(model) LIKE $${pIdx} OR LOWER(location) LIKE $${pIdx} OR CAST(year AS TEXT) LIKE $${pIdx} OR LOWER(body_style) LIKE $${pIdx})`;
+      sql += ` AND (LOWER(make) LIKE $${pIdx} OR LOWER(model) LIKE $${pIdx} OR LOWER(location) LIKE $${pIdx} OR CAST(year AS TEXT) LIKE $${pIdx} OR LOWER(body_style) LIKE $${pIdx} OR LOWER(seller_name) LIKE $${pIdx})`;
       params.push(term);
       pIdx++;
     }
 
-    if (category) {
-      const cat = category.toUpperCase();
-      if (cat === 'SEDAN') sql += " AND body_style = 'Sedan'";
-      else if (cat === 'SUV') sql += " AND body_style = 'SUV'";
-      else if (cat === 'COUPE') sql += " AND body_style = 'Coupe'";
-      else if (cat === 'ELECTRIC') sql += " AND fuel_type = 'Electric'";
-      else if (cat === 'HYBRID') sql += " AND fuel_type = 'Hybrid'";
-      else if (cat === 'TRUCK') sql += " AND body_style = 'Truck'";
-      else if (cat === 'LUXURY') sql += " AND (price >= 50000 OR make = 'Porsche' OR make = 'BMW')";
-      else if (cat === 'UNDER_15K') sql += " AND price < 15000";
-      else if (cat === 'UNDER_25K') sql += " AND price < 25000";
-      else if (cat === 'UNDER_30K') sql += " AND price < 30000";
-      else if (cat === 'LOW_MILES') sql += " AND mileage < 30000";
-      else if (cat === 'CERTIFIED') sql += " AND carfax_clean = 1";
-    }
-
-    // Sort order
-    if (sort === 'PRICE_ASC') sql += ' ORDER BY price ASC';
-    else if (sort === 'PRICE_DESC') sql += ' ORDER BY price DESC';
-    else if (sort === 'MILEAGE_ASC') sql += ' ORDER BY mileage ASC';
-    else if (sort === 'NEWEST') sql += ' ORDER BY created_at DESC';
-    else sql += ' ORDER BY created_at DESC';
+    sql += ' ORDER BY created_at DESC';
 
     const rows = await db.query(sql, params);
     const cars = rows.map(formatCar);
@@ -116,40 +90,26 @@ router.post('/', async (req, res) => {
 
     const sql = `
       INSERT INTO cars (
-        make, model, trim, year, price, mileage, transmission, fuel_type,
-        body_style, drivetrain, location, distance, description, seller_name,
-        seller_phone, seller_rating, seller_reviews, seller_response, deal_rating,
-        carfax_clean, condition, highlights, photo_1, photo_2, photo_3,
-        is_favorite, is_user_listing, created_at
+        make, model, year, price, mileage, transmission, body_style,
+        location, description, seller_name, seller_phone,
+        photo_1, photo_2, photo_3, is_favorite, is_user_listing, created_at
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14,
-        $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
       ) ${db.dbType === 'postgres' ? 'RETURNING *' : ''}
     `;
 
     const params = [
       b.make || 'Vehicle',
       b.model || 'Model',
-      b.trim || '',
       parseInt(b.year || 2023, 10),
       parseFloat(b.price || 0),
       parseInt(b.mileage || 0, 10),
       b.transmission || 'Automatic',
-      b.fuelType || 'Gasoline',
       b.bodyStyle || 'Sedan',
-      b.drivetrain || 'AWD',
       b.location || '',
-      b.distance || b.location || 'Local',
       b.description || '',
       b.sellerName || 'Seller',
       b.sellerPhone || '',
-      parseFloat(b.sellerRating || 5.0),
-      parseInt(b.sellerReviewCount || 1, 10),
-      b.sellerResponseTime || 'Replies fast',
-      b.dealRating || 'Great Deal',
-      b.carfaxClean ? 1 : 0,
-      b.condition || 'Good',
-      b.highlights || '',
       b.photo1 || null,
       b.photo2 || null,
       b.photo3 || null,
@@ -168,6 +128,13 @@ router.post('/', async (req, res) => {
       const createdRows = await db.query('SELECT * FROM cars WHERE id = $1', [insertId]);
       createdCar = formatCar(createdRows[0]);
     }
+
+    res.status(201).json(createdCar);
+  } catch (err) {
+    console.error('Error creating car listing:', err);
+    res.status(500).json({ error: 'Failed to create listing', details: err.message });
+  }
+});
 
     res.status(201).json(createdCar);
   } catch (err) {

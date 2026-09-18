@@ -28,56 +28,23 @@
             android:src="@drawable/ic_close"
             app:tint="@color/on_surface" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sell_car_title"
-                android:textColor="@color/on_surface"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sell_step_2"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <!-- Dummy view for symmetric center alignment -->
-        <View
-            android:layout_width="36dp"
-            android:layout_height="36dp" />
+            android:text="@string/sell_car_title"
+            android:textColor="@color/on_surface"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Linear Step Progress Track (50% filled) -->
-    <LinearLayout
-        android:id="@+id/progressTrack"
+    <View
+        android:id="@+id/topBarDivider"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/surface_container"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/postTopBar">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/primary_container" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/surface_container" />
-    </LinearLayout>
+        android:layout_height="1dp"
+        android:background="@color/outline_variant"
+        app:layout_constraintTop_toBottomOf="@id/postTopBar" />
 
     <!-- Scrollable Form Container -->
     <androidx.core.widget.NestedScrollView
@@ -87,7 +54,7 @@
         android:clipToPadding="false"
         android:paddingBottom="90dp"
         app:layout_constraintBottom_toTopOf="@id/postBottomBar"
-        app:layout_constraintTop_toBottomOf="@id/progressTrack">
+        app:layout_constraintTop_toBottomOf="@id/topBarDivider">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,9 +99,9 @@
                     android:background="@drawable/bg_chip_spec"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:text="0/3 Added"
-                    android:textColor="@color/primary_container"
-                    android:textSize="11sp"
+                    android:text="0 / 3"
+                    android:textColor="@color/on_surface"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -145,7 +112,7 @@
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
-                <!-- Slot 1: Front -->
+                <!-- Slot 1 -->
                 <FrameLayout
                     android:id="@+id/slot1Container"
                     android:layout_width="0dp"
@@ -194,7 +161,7 @@
                         app:tint="@color/white" />
                 </FrameLayout>
 
-                <!-- Slot 2: Cockpit -->
+                <!-- Slot 2 -->
                 <FrameLayout
                     android:id="@+id/slot2Container"
                     android:layout_width="0dp"
@@ -244,7 +211,7 @@
                         app:tint="@color/white" />
                 </FrameLayout>
 
-                <!-- Slot 3: Rear -->
+                <!-- Slot 3 -->
                 <FrameLayout
                     android:id="@+id/slot3Container"
                     android:layout_width="0dp"
@@ -295,7 +262,7 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <!-- Dashed Upload Dropzone Box -->
+            <!-- Upload Dropzone Button -->
             <LinearLayout
                 android:id="@+id/btnSelectPhotos"
                 android:layout_width="match_parent"
@@ -306,82 +273,101 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp">
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:src="@drawable/ic_photo_camera"
-                    app:tint="@color/primary_container" />
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:id="@+id/tvUploadPrompt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:text="@string/add_photos_cta"
-                    android:textColor="@color/primary_container"
+                    android:textColor="@color/on_surface"
                     android:textSize="13sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="@string/photos_hint"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- SECTION 3: Vehicle Specs Input Fields -->
+            <!-- SECTION 2: Vehicle Details -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/vehicle_details_header"
+                android:layout_marginTop="22dp"
+                android:text="Vehicle Information"
                 android:textColor="@color/on_surface"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- Year, Make, Model Field -->
+            <!-- Year, Make, Model -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilMakeModel"
                 style="@style/Widget.DriveMarket.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Year, Make, Model *">
+                android:hint="Year Make Model *">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etMakeModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
                     android:hint="e.g. 2022 Toyota Camry"
+                    android:inputType="textCapWords"
                     android:textColor="@color/on_surface"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Mileage Input Field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilMileage"
-                style="@style/Widget.DriveMarket.TextInputLayout"
+            <!-- Price & Mileage Row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Mileage (miles) *">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMileage"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPrice"
+                    style="@style/Widget.DriveMarket.TextInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="e.g. 35000"
-                    android:textColor="@color/on_surface"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:hint="Price ($ USD) *">
 
-            <!-- Transmission & Body Style Dropdowns/Chips Row -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="e.g. 25000"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/on_surface"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilMileage"
+                    style="@style/Widget.DriveMarket.TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:hint="Mileage (miles) *">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMileage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="e.g. 35000"
+                        android:inputType="number"
+                        android:textColor="@color/on_surface"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- Transmission & Body Style Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -401,7 +387,7 @@
                         android:id="@+id/etTransmission"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="e.g. Automatic"
+                        android:hint="Automatic"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -419,30 +405,62 @@
                         android:id="@+id/etBody"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="e.g. Sedan"
+                        android:hint="Sedan"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <!-- Seller Name Input -->
+            <!-- Description Input Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDescription"
+                style="@style/Widget.DriveMarket.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Description">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="Vehicle condition, features, history..."
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColor="@color/on_surface"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- SECTION 3: Seller Contact Details -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Seller Contact"
+                android:textColor="@color/on_surface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Seller Name -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSellerName"
                 style="@style/Widget.DriveMarket.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Your Name (Seller)">
+                android:hint="Seller Name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etSellerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="e.g. John Doe"
                     android:textColor="@color/on_surface"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Location & Contact Phone Row -->
+            <!-- Location & Phone Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -456,7 +474,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
-                    android:hint="City / Location">
+                    android:hint="Location / City *">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etLocation"
@@ -474,226 +492,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
-                    android:hint="Contact Phone">
+                    android:hint="Phone Number">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="phone"
                         android:hint="+1 234 567 8900"
+                        android:inputType="phone"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
-            <!-- Vehicle Condition (Radio Selection Cards) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/vehicle_condition_label"
-                android:textColor="@color/on_surface"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:columnCount="2">
-
-                <!-- Excellent (Selected) -->
-                <LinearLayout
-                    android:id="@+id/cardCondExcellent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_radio_card_selected"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:id="@+id/tvCondExcellentTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cond_excellent"
-                        android:textColor="@color/primary_container"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cond_excellent_sub"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <!-- Good -->
-                <LinearLayout
-                    android:id="@+id/cardCondGood"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_radio_card_unselected"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:id="@+id/tvCondGoodTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cond_good"
-                        android:textColor="@color/on_surface"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cond_good_sub"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </GridLayout>
-
-            <!-- SECTION 4: Asking Price & Valuation Hint -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/ask_price_header"
-                android:textColor="@color/on_surface"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilPrice"
-                style="@style/Widget.DriveMarket.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Asking Price ($ USD) *">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:hint="e.g. 25000"
-                    android:textColor="@color/on_surface"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Smart Valuation Hint Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardBackgroundColor="@color/surface_container_low"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/outline_variant"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="14dp">
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="@drawable/bg_badge_emerald_light"
-                        android:padding="6dp"
-                        android:src="@drawable/ic_verified"
-                        app:tint="@color/deal_emerald" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/valuation_title"
-                                android:textColor="@color/on_surface"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:background="@drawable/bg_badge_emerald_light"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="2dp"
-                                android:text="Great Deal"
-                                android:textColor="@color/deal_emerald"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/valuation_range"
-                            android:textColor="@color/primary_container"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/valuation_desc"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Description Input Field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilDescription"
-                style="@style/Widget.DriveMarket.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Vehicle Description">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:hint="Describe condition, features, maintenance history..."
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -711,19 +521,10 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/btnSaveDraft"
-            style="@style/AutoMarket.Button.Outlined"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/btn_save_draft" />
-
-        <Button
             android:id="@+id/btnPublish"
             style="@style/AutoMarket.Button.Black"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="@string/btn_continue_review" />
+            android:text="Publish Vehicle Listing" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

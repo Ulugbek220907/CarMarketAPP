@@ -15,33 +15,22 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
     companion object {
         const val DATABASE_NAME = "drivemarket.db"
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
 
         // Cars Table
         const val TABLE_CARS = "cars"
         const val COL_ID = "id"
         const val COL_MAKE = "make"
         const val COL_MODEL = "model"
-        const val COL_TRIM = "trim"
         const val COL_YEAR = "year"
         const val COL_PRICE = "price"
         const val COL_MILEAGE = "mileage"
         const val COL_TRANSMISSION = "transmission"
-        const val COL_FUEL_TYPE = "fuel_type"
         const val COL_BODY_STYLE = "body_style"
-        const val COL_DRIVETRAIN = "drivetrain"
         const val COL_LOCATION = "location"
-        const val COL_DISTANCE = "distance"
         const val COL_DESCRIPTION = "description"
         const val COL_SELLER_NAME = "seller_name"
         const val COL_SELLER_PHONE = "seller_phone"
-        const val COL_SELLER_RATING = "seller_rating"
-        const val COL_SELLER_REVIEWS = "seller_reviews"
-        const val COL_SELLER_RESPONSE = "seller_response"
-        const val COL_DEAL_RATING = "deal_rating"
-        const val COL_CARFAX_CLEAN = "carfax_clean"
-        const val COL_CONDITION = "condition"
-        const val COL_HIGHLIGHTS = "highlights"
         const val COL_PHOTO_1 = "photo_1"
         const val COL_PHOTO_2 = "photo_2"
         const val COL_PHOTO_3 = "photo_3"
@@ -69,31 +58,20 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
                 $COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COL_MAKE TEXT NOT NULL,
                 $COL_MODEL TEXT NOT NULL,
-                $COL_TRIM TEXT,
                 $COL_YEAR INTEGER NOT NULL,
                 $COL_PRICE REAL NOT NULL,
                 $COL_MILEAGE INTEGER NOT NULL,
                 $COL_TRANSMISSION TEXT NOT NULL,
-                $COL_FUEL_TYPE TEXT NOT NULL,
                 $COL_BODY_STYLE TEXT NOT NULL,
-                $COL_DRIVETRAIN TEXT,
                 $COL_LOCATION TEXT NOT NULL,
-                $COL_DISTANCE TEXT,
-                $COL_DESCRIPTION TEXT NOT NULL,
+                $COL_DESCRIPTION TEXT,
                 $COL_SELLER_NAME TEXT NOT NULL,
                 $COL_SELLER_PHONE TEXT NOT NULL,
-                $COL_SELLER_RATING REAL DEFAULT 4.9,
-                $COL_SELLER_REVIEWS INTEGER DEFAULT 42,
-                $COL_SELLER_RESPONSE TEXT DEFAULT 'Replies < 15 mins',
-                $COL_DEAL_RATING TEXT DEFAULT 'Great Deal',
-                $COL_CARFAX_CLEAN INTEGER DEFAULT 1,
-                $COL_CONDITION TEXT DEFAULT 'Good',
-                $COL_HIGHLIGHTS TEXT,
                 $COL_PHOTO_1 TEXT,
                 $COL_PHOTO_2 TEXT,
                 $COL_PHOTO_3 TEXT,
                 $COL_IS_FAVORITE INTEGER DEFAULT 0,
-                $COL_IS_USER_LISTING INTEGER DEFAULT 0,
+                $COL_IS_USER_LISTING INTEGER DEFAULT 1,
                 $COL_CREATED_AT INTEGER NOT NULL
             )
         """.trimIndent()
@@ -129,26 +107,15 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             if (car.id > 0) put(COL_ID, car.id)
             put(COL_MAKE, car.make)
             put(COL_MODEL, car.model)
-            put(COL_TRIM, car.trim)
             put(COL_YEAR, car.year)
             put(COL_PRICE, car.price)
             put(COL_MILEAGE, car.mileage)
             put(COL_TRANSMISSION, car.transmission)
-            put(COL_FUEL_TYPE, car.fuelType)
             put(COL_BODY_STYLE, car.bodyStyle)
-            put(COL_DRIVETRAIN, car.drivetrain)
             put(COL_LOCATION, car.location)
-            put(COL_DISTANCE, car.distance)
             put(COL_DESCRIPTION, car.description)
             put(COL_SELLER_NAME, car.sellerName)
             put(COL_SELLER_PHONE, car.sellerPhone)
-            put(COL_SELLER_RATING, car.sellerRating)
-            put(COL_SELLER_REVIEWS, car.sellerReviewCount)
-            put(COL_SELLER_RESPONSE, car.sellerResponseTime)
-            put(COL_DEAL_RATING, car.dealRating)
-            put(COL_CARFAX_CLEAN, if (car.carfaxClean) 1 else 0)
-            put(COL_CONDITION, car.condition)
-            put(COL_HIGHLIGHTS, car.highlights)
             put(COL_PHOTO_1, car.photo1)
             put(COL_PHOTO_2, car.photo2)
             put(COL_PHOTO_3, car.photo3)
@@ -179,26 +146,15 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
                     if (car.id > 0) put(COL_ID, car.id)
                     put(COL_MAKE, car.make)
                     put(COL_MODEL, car.model)
-                    put(COL_TRIM, car.trim)
                     put(COL_YEAR, car.year)
                     put(COL_PRICE, car.price)
                     put(COL_MILEAGE, car.mileage)
                     put(COL_TRANSMISSION, car.transmission)
-                    put(COL_FUEL_TYPE, car.fuelType)
                     put(COL_BODY_STYLE, car.bodyStyle)
-                    put(COL_DRIVETRAIN, car.drivetrain)
                     put(COL_LOCATION, car.location)
-                    put(COL_DISTANCE, car.distance)
                     put(COL_DESCRIPTION, car.description)
                     put(COL_SELLER_NAME, car.sellerName)
                     put(COL_SELLER_PHONE, car.sellerPhone)
-                    put(COL_SELLER_RATING, car.sellerRating)
-                    put(COL_SELLER_REVIEWS, car.sellerReviewCount)
-                    put(COL_SELLER_RESPONSE, car.sellerResponseTime)
-                    put(COL_DEAL_RATING, car.dealRating)
-                    put(COL_CARFAX_CLEAN, if (car.carfaxClean) 1 else 0)
-                    put(COL_CONDITION, car.condition)
-                    put(COL_HIGHLIGHTS, car.highlights)
                     put(COL_PHOTO_1, car.photo1)
                     put(COL_PHOTO_2, car.photo2)
                     put(COL_PHOTO_3, car.photo3)
@@ -281,25 +237,14 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         if (filter.searchQuery.isNotBlank()) {
             val query = "%${filter.searchQuery.trim()}%"
             selectionClauses.add(
-                "($COL_MAKE LIKE ? OR $COL_MODEL LIKE ? OR $COL_LOCATION LIKE ? OR CAST($COL_YEAR AS TEXT) LIKE ? OR $COL_BODY_STYLE LIKE ?)"
+                "($COL_MAKE LIKE ? OR $COL_MODEL LIKE ? OR $COL_LOCATION LIKE ? OR CAST($COL_YEAR AS TEXT) LIKE ? OR $COL_BODY_STYLE LIKE ? OR $COL_SELLER_NAME LIKE ?)"
             )
-            selectionArgs.addAll(listOf(query, query, query, query, query))
+            selectionArgs.addAll(listOf(query, query, query, query, query, query))
         }
 
-        when (filter.category) {
-            CategoryFilter.ALL -> {}
-            CategoryFilter.SEDAN -> selectionClauses.add("$COL_BODY_STYLE = 'Sedan'")
-            CategoryFilter.SUV -> selectionClauses.add("$COL_BODY_STYLE = 'SUV'")
-            CategoryFilter.COUPE -> selectionClauses.add("$COL_BODY_STYLE = 'Coupe'")
-            CategoryFilter.ELECTRIC -> selectionClauses.add("$COL_FUEL_TYPE = 'Electric'")
-            CategoryFilter.HYBRID -> selectionClauses.add("$COL_FUEL_TYPE = 'Hybrid'")
-            CategoryFilter.TRUCK -> selectionClauses.add("$COL_BODY_STYLE = 'Truck'")
-            CategoryFilter.LUXURY -> selectionClauses.add("($COL_PRICE >= 50000 OR $COL_MAKE = 'Porsche' OR $COL_MAKE = 'BMW')")
-            CategoryFilter.UNDER_15K -> selectionClauses.add("$COL_PRICE < 15000")
-            CategoryFilter.UNDER_25K -> selectionClauses.add("$COL_PRICE < 25000")
-            CategoryFilter.UNDER_30K -> selectionClauses.add("$COL_PRICE < 30000")
-            CategoryFilter.LOW_MILES -> selectionClauses.add("$COL_MILEAGE < 30000")
-            CategoryFilter.CERTIFIED -> selectionClauses.add("$COL_CARFAX_CLEAN = 1")
+        if (filter.location.isNotBlank() && filter.location != "All Locations") {
+            selectionClauses.add("$COL_LOCATION LIKE ?")
+            selectionArgs.add("%${filter.location.trim()}%")
         }
 
         val selection = if (selectionClauses.isNotEmpty()) {
@@ -307,8 +252,7 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         } else null
 
         val orderBy = when (filter.sortOption) {
-            SortOption.RECOMMENDED -> "$COL_CREATED_AT DESC"
-            SortOption.NEWEST -> "$COL_CREATED_AT DESC"
+            SortOption.RECOMMENDED, SortOption.NEWEST -> "$COL_CREATED_AT DESC"
             SortOption.PRICE_ASC -> "$COL_PRICE ASC"
             SortOption.PRICE_DESC -> "$COL_PRICE DESC"
             SortOption.MILEAGE_ASC -> "$COL_MILEAGE ASC"
@@ -404,26 +348,15 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_ID)),
             make = cursor.getString(cursor.getColumnIndexOrThrow(COL_MAKE)),
             model = cursor.getString(cursor.getColumnIndexOrThrow(COL_MODEL)),
-            trim = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRIM)) ?: "",
             year = cursor.getInt(cursor.getColumnIndexOrThrow(COL_YEAR)),
             price = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_PRICE)),
             mileage = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MILEAGE)),
             transmission = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRANSMISSION)),
-            fuelType = cursor.getString(cursor.getColumnIndexOrThrow(COL_FUEL_TYPE)),
             bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(COL_BODY_STYLE)),
-            drivetrain = cursor.getString(cursor.getColumnIndexOrThrow(COL_DRIVETRAIN)) ?: "AWD",
             location = cursor.getString(cursor.getColumnIndexOrThrow(COL_LOCATION)),
-            distance = cursor.getString(cursor.getColumnIndexOrThrow(COL_DISTANCE)) ?: "5 miles away",
-            description = cursor.getString(cursor.getColumnIndexOrThrow(COL_DESCRIPTION)),
+            description = cursor.getString(cursor.getColumnIndexOrThrow(COL_DESCRIPTION)) ?: "",
             sellerName = cursor.getString(cursor.getColumnIndexOrThrow(COL_SELLER_NAME)),
             sellerPhone = cursor.getString(cursor.getColumnIndexOrThrow(COL_SELLER_PHONE)),
-            sellerRating = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_SELLER_RATING)),
-            sellerReviewCount = cursor.getInt(cursor.getColumnIndexOrThrow(COL_SELLER_REVIEWS)),
-            sellerResponseTime = cursor.getString(cursor.getColumnIndexOrThrow(COL_SELLER_RESPONSE)) ?: "Replies < 15 mins",
-            dealRating = cursor.getString(cursor.getColumnIndexOrThrow(COL_DEAL_RATING)) ?: "Great Deal",
-            carfaxClean = cursor.getInt(cursor.getColumnIndexOrThrow(COL_CARFAX_CLEAN)) == 1,
-            condition = cursor.getString(cursor.getColumnIndexOrThrow(COL_CONDITION)) ?: "Good",
-            highlights = cursor.getString(cursor.getColumnIndexOrThrow(COL_HIGHLIGHTS)) ?: "",
             photo1 = cursor.getString(cursor.getColumnIndexOrThrow(COL_PHOTO_1)),
             photo2 = cursor.getString(cursor.getColumnIndexOrThrow(COL_PHOTO_2)),
             photo3 = cursor.getString(cursor.getColumnIndexOrThrow(COL_PHOTO_3)),

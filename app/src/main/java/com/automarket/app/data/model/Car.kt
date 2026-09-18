@@ -9,41 +9,28 @@ data class Car(
     val id: Long = 0L,
     val make: String,
     val model: String,
-    val year: Int,
+    val year: Int = 2023,
     val price: Double,
     val mileage: Int,
-    val transmission: String, // "Automatic", "Manual", "Single-Speed"
-    val fuelType: String,     // "Gasoline", "Hybrid", "Electric", "Diesel"
-    val bodyStyle: String,    // "Sedan", "SUV", "Coupe", "Truck", "Hatchback"
-    val location: String,
-    val description: String,
-    val sellerName: String,
-    val sellerPhone: String,
+    val transmission: String = "Automatic",
+    val bodyStyle: String = "Sedan",
+    val location: String = "",
+    val description: String = "",
+    val sellerName: String = "Seller",
+    val sellerPhone: String = "",
     val photo1: String? = null,
     val photo2: String? = null,
     val photo3: String? = null,
     val isFavorite: Boolean = false,
-    val isUserListing: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis(),
-    
-    // DriveMarket Attributes
-    val trim: String = "",
-    val dealRating: String = "Great Deal",
-    val carfaxClean: Boolean = true,
-    val distance: String = "5 miles away",
-    val sellerRating: Double = 4.9,
-    val sellerReviewCount: Int = 42,
-    val sellerResponseTime: String = "Replies < 15 mins",
-    val condition: String = "Excellent",
-    val drivetrain: String = "AWD",
-    val highlights: String = "Autopilot, Premium Audio, Heated Seats, Glass Roof"
+    val isUserListing: Boolean = true,
+    val createdAt: Long = System.currentTimeMillis()
 ) : Serializable {
 
     val displayTitle: String
-        get() = "$year $make $model"
+        get() = if (year > 0) "$year $make $model".trim() else "$make $model".trim()
 
-    val displaySubtitle: String
-        get() = if (trim.isNotBlank()) trim else "$transmission • $drivetrain"
+    val specsSummary: String
+        get() = "$formattedMileage • $transmission • $bodyStyle"
 
     val formattedPrice: String
         get() {
@@ -58,12 +45,6 @@ data class Car(
             return "${format.format(mileage)} mi"
         }
 
-    val formattedMonthlyPayment: String
-        get() {
-            val monthly = (price / 65.0).roundToInt()
-            return "$$monthly/mo est."
-        }
-
     fun getPhotos(): List<String> {
         val list = mutableListOf<String>()
         photo1?.takeIf { it.isNotBlank() }?.let { list.add(it) }
@@ -74,8 +55,4 @@ data class Car(
 
     val photoCount: Int
         get() = getPhotos().size
-
-    fun getHighlightsList(): List<String> {
-        return highlights.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-    }
 }

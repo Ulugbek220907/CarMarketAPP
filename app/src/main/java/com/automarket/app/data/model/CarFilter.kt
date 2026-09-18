@@ -27,6 +27,7 @@ enum class SortOption {
 data class CarFilter(
     val category: CategoryFilter = CategoryFilter.ALL,
     val sortOption: SortOption = SortOption.RECOMMENDED,
-    val searchQuery: String = ""
+    val searchQuery: String = "",
+    val location: String = ""
 )
 

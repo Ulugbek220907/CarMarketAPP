@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.automarket.app.AutoMarketApplication
 import com.automarket.app.R
 import com.automarket.app.data.model.Car
@@ -24,7 +23,6 @@ class PostCarActivity : AppCompatActivity() {
     private var photo3Base64: String? = null
 
     private var activeSlot = 1
-    private var selectedCondition = "Good"
 
     private val imagePickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -40,7 +38,6 @@ class PostCarActivity : AppCompatActivity() {
         loadSavedSellerProfile()
         setupToolbar()
         setupPhotoSlots()
-        setupConditionSelector()
         setupBottomActions()
         updatePhotoCount()
     }
@@ -174,33 +171,7 @@ class PostCarActivity : AppCompatActivity() {
         binding.tvUploadPrompt.text = if (count == 0) "Tap a slot or button below to upload up to 3 real photos" else "$count photo(s) selected"
     }
 
-    private fun setupConditionSelector() {
-        binding.cardCondExcellent.setOnClickListener { selectCondition("Excellent") }
-        binding.cardCondGood.setOnClickListener { selectCondition("Good") }
-    }
-
-    private fun selectCondition(condition: String) {
-        selectedCondition = condition
-
-        if (condition == "Excellent") {
-            binding.cardCondExcellent.setBackgroundResource(R.drawable.bg_radio_card_selected)
-            binding.tvCondExcellentTitle.setTextColor(ContextCompat.getColor(this, R.color.primary_container))
-            binding.cardCondGood.setBackgroundResource(R.drawable.bg_radio_card_unselected)
-            binding.tvCondGoodTitle.setTextColor(ContextCompat.getColor(this, R.color.on_surface))
-        } else {
-            binding.cardCondGood.setBackgroundResource(R.drawable.bg_radio_card_selected)
-            binding.tvCondGoodTitle.setTextColor(ContextCompat.getColor(this, R.color.primary_container))
-            binding.cardCondExcellent.setBackgroundResource(R.drawable.bg_radio_card_unselected)
-            binding.tvCondExcellentTitle.setTextColor(ContextCompat.getColor(this, R.color.on_surface))
-        }
-    }
-
     private fun setupBottomActions() {
-        binding.btnSaveDraft.setOnClickListener {
-            Toast.makeText(this, "Draft saved locally", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-
         binding.btnPublish.setOnClickListener {
             publishListing()
         }
@@ -246,26 +217,15 @@ class PostCarActivity : AppCompatActivity() {
         val newCar = Car(
             make = make,
             model = model,
-            trim = "$transmission • $bodyStyle",
             year = year,
             price = price,
             mileage = mileage,
             transmission = transmission,
-            fuelType = if (titleInput.contains("Tesla", ignoreCase = true) || titleInput.contains("Electric", ignoreCase = true)) "Electric" else "Gasoline",
             bodyStyle = bodyStyle,
-            drivetrain = "AWD",
             location = location,
-            distance = location,
-            description = description.ifEmpty { "$year $make $model in $selectedCondition condition." },
+            description = description.ifEmpty { "$year $make $model" },
             sellerName = sellerName,
             sellerPhone = phone,
-            sellerRating = 5.0,
-            sellerReviewCount = 1,
-            sellerResponseTime = "Replies fast",
-            dealRating = "Great Deal",
-            carfaxClean = true,
-            condition = selectedCondition,
-            highlights = "Clean Title, Verified Seller",
             photo1 = photo1Base64,
             photo2 = photo2Base64,
             photo3 = photo3Base64,

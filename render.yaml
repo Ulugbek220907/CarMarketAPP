@@ -1,3 +1,10 @@
+databases:
+  - name: carmarket-db
+    databaseName: carmarket
+    user: carmarket_user
+    plan: starter
+    region: oregon
+
 services:
   - type: web
     name: carmarket-api
@@ -12,3 +19,7 @@ services:
         value: 10000
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carmarket-db
+          property: connectionString
