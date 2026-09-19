@@ -29,12 +29,17 @@ import kotlinx.coroutines.launch
 class ChatOffersActivity : AppCompatActivity() {
 
     companion object {
-        private const val EXTRA_CAR = "extra_car"
+        const val EXTRA_CAR_ID = "extra_car_id"
+
+        fun start(context: Context, carId: Long) {
+            val intent = Intent(context, ChatOffersActivity::class.java).apply {
+                putExtra(EXTRA_CAR_ID, carId)
+            }
+            context.startActivity(intent)
+        }
 
         fun start(context: Context, car: Car) {
-            val intent = Intent(context, ChatOffersActivity::class.java)
-            intent.putExtra(EXTRA_CAR, car)
-            context.startActivity(intent)
+            start(context, car.id)
         }
     }
 
@@ -47,9 +52,16 @@ class ChatOffersActivity : AppCompatActivity() {
         binding = ActivityChatOffersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        @Suppress("DEPRECATION")
-        car = intent.getSerializableExtra(EXTRA_CAR) as? Car
+        val carId = intent.getLongExtra(EXTRA_CAR_ID, -1L)
+        if (carId != -1L) {
+            car = repository.getCarById(carId)
+        } else {
+            @Suppress("DEPRECATION")
+            car = intent.getSerializableExtra("extra_car") as? Car
+        }
+
         if (car == null) {
+            Toast.makeText(this, "Vehicle not found", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -71,9 +83,17 @@ class ChatOffersActivity : AppCompatActivity() {
         }
 
         binding.btnCallSeller.setOnClickListener {
-            val phone = c.sellerPhone
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            startActivity(intent)
+            val phone = c.sellerPhone.trim()
+            if (phone.isNotBlank()) {
+                try {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Unable to place call on this device", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Seller phone number not available", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

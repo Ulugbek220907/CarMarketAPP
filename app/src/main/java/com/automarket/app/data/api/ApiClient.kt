@@ -7,6 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+
 object ApiClient {
 
     private const val PREF_NAME = "drivemarket_api_prefs"
@@ -23,22 +25,42 @@ object ApiClient {
     @Volatile
     private var apiService: CarApiService? = null
 
+    fun isValidUrl(url: String): Boolean {
+        if (url.isBlank()) return false
+        val formatted = ensureTrailingSlash(url)
+        return try {
+            val httpUrl = formatted.toHttpUrlOrNull()
+            httpUrl != null && (httpUrl.scheme == "http" || httpUrl.scheme == "https") && httpUrl.host.isNotBlank()
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val saved = prefs.getString(KEY_BASE_URL, null)
         if (!saved.isNullOrBlank()) {
-            currentBaseUrl = ensureTrailingSlash(saved)
+            val formatted = ensureTrailingSlash(saved)
+            if (isValidUrl(formatted)) {
+                currentBaseUrl = formatted
+            } else {
+                currentBaseUrl = DEFAULT_RENDER_URL
+            }
         }
     }
 
     fun getBaseUrl(): String = currentBaseUrl
 
-    fun setBaseUrl(context: Context, newUrl: String) {
+    fun setBaseUrl(context: Context, newUrl: String): Boolean {
         val formatted = ensureTrailingSlash(newUrl)
+        if (!isValidUrl(formatted)) {
+            return false
+        }
         currentBaseUrl = formatted
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().putString(KEY_BASE_URL, formatted).apply()
         apiService = null // Invalidate cached instance
+        return true
     }
 
     fun getService(): CarApiService {

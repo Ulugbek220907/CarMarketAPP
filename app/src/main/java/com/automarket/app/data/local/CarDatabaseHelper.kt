@@ -10,8 +10,9 @@ import com.automarket.app.data.model.CarFilter
 import com.automarket.app.data.model.CategoryFilter
 import com.automarket.app.data.model.ChatMessage
 import com.automarket.app.data.model.SortOption
+import com.automarket.app.util.ImageUtils
 
-class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class CarDatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         const val DATABASE_NAME = "drivemarket.db"
@@ -101,8 +102,22 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         onCreate(db)
     }
 
+    private fun ensureLocalPhotoPath(photo: String?): String? {
+        if (photo.isNullOrBlank()) return null
+        if (photo.startsWith("http://") || photo.startsWith("https://")) return photo
+        if (photo.startsWith("/") || photo.startsWith("file:")) return photo
+        if (photo.startsWith("data:") || photo.length > 200) {
+            return ImageUtils.saveBase64ToInternalStorage(context, photo) ?: photo
+        }
+        return photo
+    }
+
     fun insertCar(car: Car): Long {
         val db = writableDatabase
+        val p1 = ensureLocalPhotoPath(car.photo1)
+        val p2 = ensureLocalPhotoPath(car.photo2)
+        val p3 = ensureLocalPhotoPath(car.photo3)
+
         val values = ContentValues().apply {
             if (car.id > 0) put(COL_ID, car.id)
             put(COL_MAKE, car.make)
@@ -116,9 +131,9 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             put(COL_DESCRIPTION, car.description)
             put(COL_SELLER_NAME, car.sellerName)
             put(COL_SELLER_PHONE, car.sellerPhone)
-            put(COL_PHOTO_1, car.photo1)
-            put(COL_PHOTO_2, car.photo2)
-            put(COL_PHOTO_3, car.photo3)
+            put(COL_PHOTO_1, p1)
+            put(COL_PHOTO_2, p2)
+            put(COL_PHOTO_3, p3)
             put(COL_IS_FAVORITE, if (car.isFavorite) 1 else 0)
             put(COL_IS_USER_LISTING, if (car.isUserListing) 1 else 0)
             put(COL_CREATED_AT, car.createdAt)
@@ -126,22 +141,85 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         return db.insertWithOnConflict(TABLE_CARS, null, values, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
+    fun updateCarId(localId: Long, serverCar: Car) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            val localCar = getCarById(localId)
+            val p1 = localCar?.photo1 ?: ensureLocalPhotoPath(serverCar.photo1)
+            val p2 = localCar?.photo2 ?: ensureLocalPhotoPath(serverCar.photo2)
+            val p3 = localCar?.photo3 ?: ensureLocalPhotoPath(serverCar.photo3)
+            val isFav = localCar?.isFavorite ?: serverCar.isFavorite
+            val isUser = localCar?.isUserListing ?: true
+
+            val finalCar = serverCar.copy(
+                id = serverCar.id,
+                photo1 = p1,
+                photo2 = p2,
+                photo3 = p3,
+                isFavorite = isFav,
+                isUserListing = isUser
+            )
+
+            if (localId != serverCar.id) {
+                db.delete(TABLE_CARS, "$COL_ID = ?", arrayOf(localId.toString()))
+                val msgValues = ContentValues().apply {
+                    put(COL_MSG_CAR_ID, serverCar.id)
+                }
+                db.update(TABLE_MESSAGES, msgValues, "$COL_MSG_CAR_ID = ?", arrayOf(localId.toString()))
+            }
+            insertCar(finalCar)
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
     fun syncCars(cars: List<Car>) {
         val db = writableDatabase
         db.beginTransaction()
         try {
-            // Keep local favorites status
-            val favCursor = db.rawQuery("SELECT $COL_ID FROM $TABLE_CARS WHERE $COL_IS_FAVORITE = 1", null)
+            // Keep local favorites status and local photo paths
+            val existingCursor = db.rawQuery(
+                "SELECT $COL_ID, $COL_IS_FAVORITE, $COL_PHOTO_1, $COL_PHOTO_2, $COL_PHOTO_3, $COL_IS_USER_LISTING FROM $TABLE_CARS",
+                null
+            )
             val favIds = mutableSetOf<Long>()
-            while (favCursor.moveToNext()) {
-                favIds.add(favCursor.getLong(0))
-            }
-            favCursor.close()
+            val localPhotosMap = mutableMapOf<Long, Triple<String?, String?, String?>>()
+            val localOnlyCars = mutableListOf<Long>()
+            val serverCarIds = cars.map { it.id }.toSet()
 
-            db.delete(TABLE_CARS, null, null)
+            while (existingCursor.moveToNext()) {
+                val id = existingCursor.getLong(0)
+                if (existingCursor.getInt(1) == 1) {
+                    favIds.add(id)
+                }
+                val p1 = existingCursor.getString(2)
+                val p2 = existingCursor.getString(3)
+                val p3 = existingCursor.getString(4)
+                localPhotosMap[id] = Triple(p1, p2, p3)
+
+                val isUserListing = existingCursor.getInt(5) == 1
+                if (isUserListing && !serverCarIds.contains(id)) {
+                    localOnlyCars.add(id)
+                }
+            }
+            existingCursor.close()
+
+            if (localOnlyCars.isEmpty()) {
+                db.delete(TABLE_CARS, null, null)
+            } else {
+                val placeholders = localOnlyCars.joinToString(",") { "?" }
+                db.delete(TABLE_CARS, "$COL_ID NOT IN ($placeholders)", localOnlyCars.map { it.toString() }.toTypedArray())
+            }
 
             for (car in cars) {
                 val isFav = car.isFavorite || favIds.contains(car.id)
+                val existingPhotos = localPhotosMap[car.id]
+                val p1 = existingPhotos?.first?.takeIf { java.io.File(it).exists() } ?: ensureLocalPhotoPath(car.photo1)
+                val p2 = existingPhotos?.second?.takeIf { java.io.File(it).exists() } ?: ensureLocalPhotoPath(car.photo2)
+                val p3 = existingPhotos?.third?.takeIf { java.io.File(it).exists() } ?: ensureLocalPhotoPath(car.photo3)
+
                 val values = ContentValues().apply {
                     if (car.id > 0) put(COL_ID, car.id)
                     put(COL_MAKE, car.make)
@@ -155,9 +233,9 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
                     put(COL_DESCRIPTION, car.description)
                     put(COL_SELLER_NAME, car.sellerName)
                     put(COL_SELLER_PHONE, car.sellerPhone)
-                    put(COL_PHOTO_1, car.photo1)
-                    put(COL_PHOTO_2, car.photo2)
-                    put(COL_PHOTO_3, car.photo3)
+                    put(COL_PHOTO_1, p1)
+                    put(COL_PHOTO_2, p2)
+                    put(COL_PHOTO_3, p3)
                     put(COL_IS_FAVORITE, if (isFav) 1 else 0)
                     put(COL_IS_USER_LISTING, if (car.isUserListing) 1 else 0)
                     put(COL_CREATED_AT, car.createdAt)
@@ -174,7 +252,32 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val db = writableDatabase
         db.beginTransaction()
         try {
+            // Find existing local messages
+            val cursor = db.query(
+                TABLE_MESSAGES,
+                null,
+                "$COL_MSG_CAR_ID = ?",
+                arrayOf(carId.toString()),
+                null,
+                null,
+                null
+            )
+            val localMessages = mutableListOf<ChatMessage>()
+            while (cursor.moveToNext()) {
+                localMessages.add(cursorToMessage(cursor))
+            }
+            cursor.close()
+
+            // Keep local user messages that haven't been received by the server yet
+            val unsyncedLocalMessages = localMessages.filter { localMsg ->
+                localMsg.isFromUser && messages.none { serverMsg ->
+                    serverMsg.messageText == localMsg.messageText &&
+                            kotlin.math.abs(serverMsg.timestamp - localMsg.timestamp) < 10000
+                }
+            }
+
             db.delete(TABLE_MESSAGES, "$COL_MSG_CAR_ID = ?", arrayOf(carId.toString()))
+
             for (msg in messages) {
                 val values = ContentValues().apply {
                     if (msg.id > 0) put(COL_MSG_ID, msg.id)
@@ -190,6 +293,22 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
                 }
                 db.insertWithOnConflict(TABLE_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE)
             }
+
+            for (localMsg in unsyncedLocalMessages) {
+                val values = ContentValues().apply {
+                    put(COL_MSG_CAR_ID, localMsg.carId)
+                    put(COL_MSG_SENDER, localMsg.senderName)
+                    put(COL_MSG_TEXT, localMsg.messageText)
+                    put(COL_MSG_TIMESTAMP, localMsg.timestamp)
+                    put(COL_MSG_FROM_USER, 1)
+                    put(COL_MSG_SYSTEM, if (localMsg.isSystemNotification) 1 else 0)
+                    put(COL_MSG_OFFICIAL_OFFER, if (localMsg.isOfficialOffer) 1 else 0)
+                    put(COL_MSG_OFFER_AMOUNT, localMsg.offerAmount)
+                    put(COL_MSG_ORIGINAL_PRICE, localMsg.originalListPrice)
+                }
+                db.insert(TABLE_MESSAGES, null, values)
+            }
+
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()

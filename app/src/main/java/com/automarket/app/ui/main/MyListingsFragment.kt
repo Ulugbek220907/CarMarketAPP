@@ -45,10 +45,7 @@ class MyListingsFragment : Fragment() {
     private fun setupRecyclerView() {
         carAdapter = CarAdapter(
             onCarClick = { car ->
-                val intent = Intent(requireContext(), CarDetailActivity::class.java).apply {
-                    putExtra(CarDetailActivity.EXTRA_CAR_ID, car.id)
-                }
-                startActivity(intent)
+                CarDetailActivity.start(requireContext(), car.id)
             },
             onBookmarkClick = { car, _ ->
                 val repo = (requireActivity().application as AutoMarketApplication).repository

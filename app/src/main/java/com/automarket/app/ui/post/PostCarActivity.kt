@@ -6,21 +6,25 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.automarket.app.AutoMarketApplication
 import com.automarket.app.R
 import com.automarket.app.data.model.Car
 import com.automarket.app.databinding.ActivityPostCarBinding
 import com.automarket.app.util.ImageUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PostCarActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostCarBinding
     private val repository by lazy { (application as AutoMarketApplication).repository }
 
-    // 3 Photos as Base64 strings for cross-device cloud persistence
-    private var photo1Base64: String? = null
-    private var photo2Base64: String? = null
-    private var photo3Base64: String? = null
+    // 3 Photos stored locally in internal storage to avoid CursorWindow and memory issues
+    private var photo1Path: String? = null
+    private var photo2Path: String? = null
+    private var photo3Path: String? = null
 
     private var activeSlot = 1
 
@@ -92,9 +96,9 @@ class PostCarActivity : AppCompatActivity() {
 
         binding.btnSelectPhotos.setOnClickListener {
             activeSlot = when {
-                photo1Base64 == null -> 1
-                photo2Base64 == null -> 2
-                photo3Base64 == null -> 3
+                photo1Path == null -> 1
+                photo2Path == null -> 2
+                photo3Path == null -> 3
                 else -> 1
             }
             imagePickerLauncher.launch("image/*")
@@ -102,56 +106,60 @@ class PostCarActivity : AppCompatActivity() {
     }
 
     private fun handleImagePicked(uri: Uri) {
-        val base64Data = ImageUtils.uriToBase64(this, uri)
-        if (base64Data == null) {
-            Toast.makeText(this, "Failed to compress and load image", Toast.LENGTH_SHORT).show()
-            return
-        }
+        lifecycleScope.launch(Dispatchers.IO) {
+            val localPath = ImageUtils.saveImageUriToInternalStorage(this@PostCarActivity, uri)
+            withContext(Dispatchers.Main) {
+                if (localPath == null) {
+                    Toast.makeText(this@PostCarActivity, "Failed to compress and save image", Toast.LENGTH_SHORT).show()
+                    return@withContext
+                }
 
-        when (activeSlot) {
-            1 -> {
-                photo1Base64 = base64Data
-                binding.emptySlot1.visibility = View.GONE
-                binding.ivPhoto1.visibility = View.VISIBLE
-                binding.btnRemovePhoto1.visibility = View.VISIBLE
-                ImageUtils.loadImage(binding.ivPhoto1, null, base64Data)
-            }
-            2 -> {
-                photo2Base64 = base64Data
-                binding.emptySlot2.visibility = View.GONE
-                binding.ivPhoto2.visibility = View.VISIBLE
-                binding.btnRemovePhoto2.visibility = View.VISIBLE
-                ImageUtils.loadImage(binding.ivPhoto2, null, base64Data)
-            }
-            3 -> {
-                photo3Base64 = base64Data
-                binding.emptySlot3.visibility = View.GONE
-                binding.ivPhoto3.visibility = View.VISIBLE
-                binding.btnRemovePhoto3.visibility = View.VISIBLE
-                ImageUtils.loadImage(binding.ivPhoto3, null, base64Data)
+                when (activeSlot) {
+                    1 -> {
+                        photo1Path = localPath
+                        binding.emptySlot1.visibility = View.GONE
+                        binding.ivPhoto1.visibility = View.VISIBLE
+                        binding.btnRemovePhoto1.visibility = View.VISIBLE
+                        ImageUtils.loadImage(binding.ivPhoto1, null, localPath)
+                    }
+                    2 -> {
+                        photo2Path = localPath
+                        binding.emptySlot2.visibility = View.GONE
+                        binding.ivPhoto2.visibility = View.VISIBLE
+                        binding.btnRemovePhoto2.visibility = View.VISIBLE
+                        ImageUtils.loadImage(binding.ivPhoto2, null, localPath)
+                    }
+                    3 -> {
+                        photo3Path = localPath
+                        binding.emptySlot3.visibility = View.GONE
+                        binding.ivPhoto3.visibility = View.VISIBLE
+                        binding.btnRemovePhoto3.visibility = View.VISIBLE
+                        ImageUtils.loadImage(binding.ivPhoto3, null, localPath)
+                    }
+                }
+                updatePhotoCount()
             }
         }
-        updatePhotoCount()
     }
 
     private fun removePhoto(slot: Int) {
         when (slot) {
             1 -> {
-                photo1Base64 = null
+                photo1Path = null
                 binding.emptySlot1.visibility = View.VISIBLE
                 binding.ivPhoto1.setImageDrawable(null)
                 binding.ivPhoto1.visibility = View.GONE
                 binding.btnRemovePhoto1.visibility = View.GONE
             }
             2 -> {
-                photo2Base64 = null
+                photo2Path = null
                 binding.emptySlot2.visibility = View.VISIBLE
                 binding.ivPhoto2.setImageDrawable(null)
                 binding.ivPhoto2.visibility = View.GONE
                 binding.btnRemovePhoto2.visibility = View.GONE
             }
             3 -> {
-                photo3Base64 = null
+                photo3Path = null
                 binding.emptySlot3.visibility = View.VISIBLE
                 binding.ivPhoto3.setImageDrawable(null)
                 binding.ivPhoto3.visibility = View.GONE
@@ -163,9 +171,9 @@ class PostCarActivity : AppCompatActivity() {
 
     private fun updatePhotoCount() {
         var count = 0
-        if (photo1Base64 != null) count++
-        if (photo2Base64 != null) count++
-        if (photo3Base64 != null) count++
+        if (photo1Path != null) count++
+        if (photo2Path != null) count++
+        if (photo3Path != null) count++
 
         binding.tvPhotosCountBadge.text = "$count / 3"
         binding.tvUploadPrompt.text = if (count == 0) "Tap a slot or button below to upload up to 3 real photos" else "$count photo(s) selected"
@@ -226,9 +234,9 @@ class PostCarActivity : AppCompatActivity() {
             description = description.ifEmpty { "$year $make $model" },
             sellerName = sellerName,
             sellerPhone = phone,
-            photo1 = photo1Base64,
-            photo2 = photo2Base64,
-            photo3 = photo3Base64,
+            photo1 = photo1Path,
+            photo2 = photo2Path,
+            photo3 = photo3Path,
             isFavorite = false,
             isUserListing = true,
             createdAt = System.currentTimeMillis()

@@ -23,9 +23,15 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Clear endpoint to wipe all data
+const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'drivemarket-admin-secret-key';
+
+// Clear endpoint to wipe all data (secured behind admin key)
 app.post('/api/clear', async (req, res) => {
   try {
+    const authHeader = req.headers['x-admin-key'] || req.headers['authorization'] || req.query.adminKey;
+    if (!authHeader || (authHeader !== ADMIN_API_KEY && authHeader !== `Bearer ${ADMIN_API_KEY}`)) {
+      return res.status(403).json({ error: 'Unauthorized: Invalid or missing admin key' });
+    }
     await db.query('DELETE FROM messages');
     await db.query('DELETE FROM cars');
     res.json({ success: true, message: 'All vehicles and messages wiped successfully' });

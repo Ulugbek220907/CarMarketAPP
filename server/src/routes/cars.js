@@ -51,9 +51,9 @@ router.get('/', async (req, res) => {
 
     if (search && search.trim().length > 0) {
       const term = `%${search.trim().toLowerCase()}%`;
-      sql += ` AND (LOWER(make) LIKE $${pIdx} OR LOWER(model) LIKE $${pIdx} OR LOWER(location) LIKE $${pIdx} OR CAST(year AS TEXT) LIKE $${pIdx} OR LOWER(body_style) LIKE $${pIdx} OR LOWER(seller_name) LIKE $${pIdx})`;
-      params.push(term);
-      pIdx++;
+      sql += ` AND (LOWER(make) LIKE $${pIdx} OR LOWER(model) LIKE $${pIdx + 1} OR LOWER(location) LIKE $${pIdx + 2} OR CAST(year AS TEXT) LIKE $${pIdx + 3} OR LOWER(body_style) LIKE $${pIdx + 4} OR LOWER(seller_name) LIKE $${pIdx + 5})`;
+      params.push(term, term, term, term, term, term);
+      pIdx += 6;
     }
 
     sql += ' ORDER BY created_at DESC';
@@ -128,13 +128,6 @@ router.post('/', async (req, res) => {
       const createdRows = await db.query('SELECT * FROM cars WHERE id = $1', [insertId]);
       createdCar = formatCar(createdRows[0]);
     }
-
-    res.status(201).json(createdCar);
-  } catch (err) {
-    console.error('Error creating car listing:', err);
-    res.status(500).json({ error: 'Failed to create listing', details: err.message });
-  }
-});
 
     res.status(201).json(createdCar);
   } catch (err) {

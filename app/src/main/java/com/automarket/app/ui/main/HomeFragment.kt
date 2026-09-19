@@ -20,6 +20,8 @@ import com.automarket.app.databinding.FragmentHomeBinding
 import com.automarket.app.ui.adapter.CarAdapter
 import com.automarket.app.ui.detail.CarDetailActivity
 import com.automarket.app.ui.post.PostCarActivity
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -29,6 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var carAdapter: CarAdapter
     private var currentFilter = CarFilter()
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -132,9 +135,13 @@ class HomeFragment : Fragment() {
             .setPositiveButton("Save & Connect") { _, _ ->
                 val newUrl = input.text.toString().trim()
                 if (newUrl.isNotEmpty()) {
-                    ApiClient.setBaseUrl(requireContext(), newUrl)
-                    Toast.makeText(requireContext(), "Updated backend URL to $newUrl", Toast.LENGTH_SHORT).show()
-                    loadCars()
+                    val success = ApiClient.setBaseUrl(requireContext(), newUrl)
+                    if (success) {
+                        Toast.makeText(requireContext(), "Updated backend URL to $newUrl", Toast.LENGTH_SHORT).show()
+                        loadCars()
+                    } else {
+                        Toast.makeText(requireContext(), "Invalid backend URL format. Must start with http:// or https://", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
             .setNeutralButton("Reset Default") { _, _ ->
@@ -152,14 +159,21 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString().orEmpty()
                 binding.btnClearSearch.visibility = if (query.isNotEmpty()) View.VISIBLE else View.GONE
-                currentFilter = currentFilter.copy(searchQuery = query)
-                loadCars()
+                searchJob?.cancel()
+                searchJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(300)
+                    currentFilter = currentFilter.copy(searchQuery = query)
+                    loadCars()
+                }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         binding.btnClearSearch.setOnClickListener {
+            searchJob?.cancel()
             binding.etSearch.text?.clear()
+            currentFilter = currentFilter.copy(searchQuery = "")
+            loadCars()
         }
     }
 

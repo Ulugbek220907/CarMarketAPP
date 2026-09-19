@@ -134,11 +134,16 @@ class CarDetailActivity : AppCompatActivity() {
         // Call Seller button
         binding.btnCallSeller.setOnClickListener {
             currentCar?.let { car ->
-                if (car.sellerPhone.isNotBlank()) {
-                    val dialIntent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:${car.sellerPhone.trim()}")
+                val phone = car.sellerPhone.trim()
+                if (phone.isNotBlank()) {
+                    try {
+                        val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                            data = Uri.parse("tel:$phone")
+                        }
+                        startActivity(dialIntent)
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Unable to place call on this device", Toast.LENGTH_SHORT).show()
                     }
-                    startActivity(dialIntent)
                 } else {
                     Toast.makeText(this, "Seller phone number not available", Toast.LENGTH_SHORT).show()
                 }
@@ -148,7 +153,7 @@ class CarDetailActivity : AppCompatActivity() {
         // Chat / Message button
         binding.btnContactSeller.setOnClickListener {
             currentCar?.let { car ->
-                ChatOffersActivity.start(this, car)
+                ChatOffersActivity.start(this, car.id)
             }
         }
 

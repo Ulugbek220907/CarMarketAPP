@@ -7,15 +7,17 @@ import com.automarket.app.data.local.CarDatabaseHelper
 import com.automarket.app.data.model.Car
 import com.automarket.app.data.model.CarFilter
 import com.automarket.app.data.model.ChatMessage
+import com.automarket.app.util.ImageUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CarRepository(private val context: Context) {
 
     private val dbHelper = CarDatabaseHelper(context)
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
         ApiClient.init(context)
@@ -45,10 +47,16 @@ class CarRepository(private val context: Context) {
         scope.launch {
             try {
                 val api = ApiClient.getService()
-                val response = api.createCar(car.copy(id = localId))
+                val uploadCar = car.copy(
+                    id = 0,
+                    photo1 = ImageUtils.toUploadableBase64(context, car.photo1),
+                    photo2 = ImageUtils.toUploadableBase64(context, car.photo2),
+                    photo3 = ImageUtils.toUploadableBase64(context, car.photo3)
+                )
+                val response = api.createCar(uploadCar)
                 if (response.isSuccessful && response.body() != null) {
                     val serverCar = response.body()!!
-                    dbHelper.insertCar(serverCar)
+                    dbHelper.updateCarId(localId, serverCar)
                     Log.d("CarRepository", "Vehicle synced to Render with ID ${serverCar.id}")
                     withContext(Dispatchers.Main) {
                         onComplete?.invoke(true)

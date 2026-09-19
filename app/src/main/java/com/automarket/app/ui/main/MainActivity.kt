@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     val cars = repo.getCars(CarFilter())
                     val firstCar = cars.firstOrNull()
                     if (firstCar != null) {
-                        ChatOffersActivity.start(this, firstCar)
+                        ChatOffersActivity.start(this, firstCar.id)
                     } else {
                         Toast.makeText(this, "No active vehicle chats yet", Toast.LENGTH_SHORT).show()
                     }
