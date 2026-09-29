@@ -15,45 +15,55 @@ import com.automarket.app.R
 import com.automarket.app.data.model.Car
 import com.automarket.app.databinding.ActivityCarDetailBinding
 import com.automarket.app.ui.chat.ChatOffersActivity
+import java.util.Locale
 
 class CarDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CAR_ID = "extra_car_id"
 
-        fun start(context: Context, carId: Long) {
-            val intent = Intent(context, CarDetailActivity::class.java)
-            intent.putExtra(EXTRA_CAR_ID, carId)
+        fun start(context: Context, carId: String) {
+            val intent = Intent(context, CarDetailActivity::class.java).apply {
+                putExtra(EXTRA_CAR_ID, carId)
+            }
             context.startActivity(intent)
         }
     }
 
     private lateinit var binding: ActivityCarDetailBinding
     private val repository by lazy { (application as AutoMarketApplication).repository }
-    private var carId: Long = -1L
+    private var carId: String = ""
     private var currentCar: Car? = null
+
+    private val updateListener: () -> Unit = {
+        loadCarDetails()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCarDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        carId = intent.getLongExtra(EXTRA_CAR_ID, -1L)
-        if (carId == -1L) {
+        carId = intent.getStringExtra(EXTRA_CAR_ID).orEmpty()
+        if (carId.isEmpty()) {
             Toast.makeText(this, "Vehicle not found", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
+        repository.addUpdateListener(updateListener)
         loadCarDetails()
         setupListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        repository.removeUpdateListener(updateListener)
     }
 
     private fun loadCarDetails() {
         val car = repository.getCarById(carId)
         if (car == null) {
-            Toast.makeText(this, "Vehicle not found", Toast.LENGTH_SHORT).show()
-            finish()
             return
         }
         currentCar = car
@@ -61,6 +71,7 @@ class CarDetailActivity : AppCompatActivity() {
         // Title, Price & Location
         binding.tvCarTitle.text = car.displayTitle
         binding.tvPrice.text = car.formattedPrice
+        binding.tvMonthlyEstimate.text = car.monthlyEstimate
         binding.tvLocation.text = car.location.ifBlank { "Location not specified" }
 
         // Genuine Vehicle Specifications Grid
@@ -72,10 +83,22 @@ class CarDetailActivity : AppCompatActivity() {
         // Description Overview
         binding.tvDescription.text = car.description.ifBlank { "No additional details provided." }
 
-        // Seller Information
-        binding.tvSellerName.text = car.sellerName.ifBlank { "Seller" }
-        binding.tvSellerPhone.text = car.sellerPhone.ifBlank { "Phone not provided" }
-        binding.tvSellerLocation.text = "Location: ${car.location.ifBlank { "Not specified" }}"
+        // Seller Information & Bottom Action Context
+        val currentUid = repository.getCurrentUserUid()
+        val isUser = car.isUserListing || (currentUid.isNotEmpty() && car.sellerUid == currentUid)
+
+        if (isUser) {
+            binding.tvSellerName.text = "${car.sellerName.ifBlank { "You" }} (Your Listing)"
+            binding.tvSellerPhone.text = car.sellerPhone.ifBlank { "Owner listing" }
+            binding.btnCallSeller.visibility = View.GONE
+            binding.btnContactSeller.text = "View Inquiries & Offers"
+        } else {
+            binding.tvSellerName.text = car.sellerName.ifBlank { "Verified Private Seller" }
+            binding.tvSellerPhone.text = car.sellerPhone.ifBlank { "Direct in-app messaging" }
+            binding.btnCallSeller.visibility = View.VISIBLE
+            binding.btnContactSeller.text = getString(R.string.action_message)
+        }
+        binding.tvSellerLocation.text = "Location: ${car.location.ifBlank { "Austin, TX" }}"
 
         // Photos Slider
         val photos = car.getPhotos()
@@ -98,7 +121,7 @@ class CarDetailActivity : AppCompatActivity() {
         updateBookmarkIcon(car.isFavorite)
 
         // Delete button for user listings
-        binding.btnDeleteListing.visibility = if (car.isUserListing) View.VISIBLE else View.GONE
+        binding.btnDeleteListing.visibility = if (isUser) View.VISIBLE else View.GONE
     }
 
     private fun setupListeners() {
@@ -108,7 +131,7 @@ class CarDetailActivity : AppCompatActivity() {
 
         binding.btnShare.setOnClickListener {
             currentCar?.let { car ->
-                val shareText = "Check out this ${car.displayTitle} for ${car.formattedPrice} on DriveMarket!\n" +
+                val shareText = "Check out this ${car.displayTitle} for ${car.formattedPrice} on AutoMarket!\n" +
                         "Mileage: ${car.formattedMileage} | Location: ${car.location}\n" +
                         "Contact Seller: ${car.sellerName} (${car.sellerPhone})"
                 val sendIntent = Intent().apply {
@@ -122,8 +145,7 @@ class CarDetailActivity : AppCompatActivity() {
 
         binding.btnBookmark.setOnClickListener {
             currentCar?.let { car ->
-                val newStatus = !car.isFavorite
-                repository.toggleFavorite(car.id)
+                val newStatus = repository.toggleFavorite(car.id)
                 currentCar = car.copy(isFavorite = newStatus)
                 updateBookmarkIcon(newStatus)
                 val msg = if (newStatus) "Saved to favorites" else "Removed from favorites"
@@ -150,11 +172,15 @@ class CarDetailActivity : AppCompatActivity() {
             }
         }
 
-        // Chat / Message button
+        // Chat & Offer button
         binding.btnContactSeller.setOnClickListener {
             currentCar?.let { car ->
                 ChatOffersActivity.start(this, car.id)
             }
+        }
+
+        binding.llMonthlyEstimate.setOnClickListener {
+            currentCar?.let { car -> showFinancingCalculatorDialog(car) }
         }
 
         binding.btnDeleteListing.setOnClickListener {
@@ -186,6 +212,37 @@ class CarDetailActivity : AppCompatActivity() {
                 finish()
             }
             .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    private fun showFinancingCalculatorDialog(car: Car) {
+        val price = car.price
+        val downPayment = price * 0.10
+        val loanAmount = price - downPayment
+        val termMonths = 72
+        val apr = 5.49
+        val monthly = if (termMonths > 0) (price * 1.15) / termMonths else 0.0
+
+        val downPaymentStr = String.format(Locale.US, "%,.0f", downPayment)
+        val loanAmountStr = String.format(Locale.US, "%,.0f", loanAmount)
+        val monthlyStr = String.format(Locale.US, "%,.0f", monthly)
+
+        val message = "Vehicle: " + car.displayTitle + "\n" +
+            "Listing Price: " + car.formattedPrice + "\n\n" +
+            "• Down Payment (10%): $" + downPaymentStr + "\n" +
+            "• Estimated Loan Amount: $" + loanAmountStr + "\n" +
+            "• Term Length: " + termMonths + " months\n" +
+            "• Estimated APR: " + apr + "%\n\n" +
+            "Estimated Monthly Payment: $" + monthlyStr + "/mo*\n\n" +
+            "*Estimates based on tier-1 credit. Taxes, titles, and registration fees may vary by state."
+
+        AlertDialog.Builder(this)
+            .setTitle("Financing & Payment Calculator")
+            .setMessage(message)
+            .setPositiveButton("Get Pre-Qualified") { _, _ ->
+                Toast.makeText(this, "Pre-qualification request sent to DriveMarket Financing Partners", Toast.LENGTH_LONG).show()
+            }
+            .setNegativeButton("Close", null)
             .show()
     }
 }

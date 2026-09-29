@@ -8,14 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.automarket.app.AutoMarketApplication
-import com.automarket.app.data.api.ApiClient
+import com.automarket.app.R
 import com.automarket.app.data.model.CarFilter
+import com.automarket.app.data.model.CategoryFilter
+import com.automarket.app.data.model.SortOption
 import com.automarket.app.databinding.FragmentHomeBinding
 import com.automarket.app.ui.adapter.CarAdapter
 import com.automarket.app.ui.detail.CarDetailActivity
@@ -33,6 +36,10 @@ class HomeFragment : Fragment() {
     private var currentFilter = CarFilter()
     private var searchJob: Job? = null
 
+    private val updateListener: () -> Unit = {
+        loadCars()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,13 +54,25 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         setupTopBar()
+        setupCategoryChips()
+        setupSortSelector()
         setupSearch()
+
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.addUpdateListener(updateListener)
         loadCars()
     }
 
     override fun onResume() {
         super.onResume()
         loadCars()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.removeUpdateListener(updateListener)
+        _binding = null
     }
 
     private fun setupRecyclerView() {
@@ -80,20 +99,85 @@ class HomeFragment : Fragment() {
             showLocationPickerDialog()
         }
 
-        binding.btnLocationPicker.setOnLongClickListener {
-            showServerConfigDialog()
-            true
-        }
-
         binding.btnPostCarEmpty.setOnClickListener {
             val intent = Intent(requireContext(), PostCarActivity::class.java)
             startActivity(intent)
         }
     }
 
+    private fun setupCategoryChips() {
+        val chips = listOf(
+            binding.chipCategoryAll to CategoryFilter.ALL,
+            binding.chipCategorySUV to CategoryFilter.SUV,
+            binding.chipCategorySedan to CategoryFilter.SEDAN,
+            binding.chipCategoryElectric to CategoryFilter.ELECTRIC,
+            binding.chipCategoryTruck to CategoryFilter.TRUCK,
+            binding.chipCategoryLuxury to CategoryFilter.LUXURY,
+            binding.chipCategoryHybrid to CategoryFilter.HYBRID,
+            binding.chipCategoryCoupe to CategoryFilter.COUPE,
+            binding.chipCategoryUnder30K to CategoryFilter.UNDER_30K,
+            binding.chipCategoryLowMiles to CategoryFilter.LOW_MILES
+        )
+
+        for ((chipView, category) in chips) {
+            chipView.setOnClickListener {
+                currentFilter = currentFilter.copy(category = category)
+                updateChipVisuals(chips, category)
+                loadCars()
+            }
+        }
+    }
+
+    private fun updateChipVisuals(chips: List<Pair<TextView, CategoryFilter>>, selected: CategoryFilter) {
+        val activeBg = ContextCompat.getDrawable(requireContext(), R.drawable.btn_primary_blue)
+        val inactiveBg = ContextCompat.getDrawable(requireContext(), R.drawable.bg_chip_category_inactive)
+        val activeTextColor = ContextCompat.getColor(requireContext(), R.color.white)
+        val inactiveTextColor = ContextCompat.getColor(requireContext(), R.color.on_surface)
+
+        for ((view, category) in chips) {
+            if (category == selected) {
+                view.background = activeBg
+                view.setTextColor(activeTextColor)
+            } else {
+                view.background = inactiveBg
+                view.setTextColor(inactiveTextColor)
+            }
+        }
+    }
+
+    private fun setupSortSelector() {
+        binding.btnSort.setOnClickListener {
+            showSortDialog()
+        }
+    }
+
+    private fun showSortDialog() {
+        val sortOptions = listOf(
+            "Recommended" to SortOption.RECOMMENDED,
+            "Price: Low to High" to SortOption.PRICE_ASC,
+            "Price: High to Low" to SortOption.PRICE_DESC,
+            "Newest Year" to SortOption.NEWEST,
+            "Lowest Mileage" to SortOption.MILEAGE_ASC
+        )
+        val names = sortOptions.map { it.first }.toTypedArray()
+        val currentIdx = sortOptions.indexOfFirst { it.second == currentFilter.sortOption }.coerceAtLeast(0)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Sort Listings")
+            .setSingleChoiceItems(names, currentIdx) { dialog, which ->
+                val selected = sortOptions[which]
+                currentFilter = currentFilter.copy(sortOption = selected.second)
+                binding.tvSortLabel.text = selected.first.split(" ").first()
+                loadCars()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun showLocationPickerDialog() {
         val input = EditText(requireContext()).apply {
-            hint = "e.g. Tashkent, London, New York..."
+            hint = "e.g. Austin, Miami, Dallas, Seattle..."
         }
 
         AlertDialog.Builder(requireContext())
@@ -120,39 +204,6 @@ class HomeFragment : Fragment() {
             .show()
     }
 
-    private fun showServerConfigDialog() {
-        val currentUrl = ApiClient.getBaseUrl()
-        val input = EditText(requireContext()).apply {
-            setText(currentUrl)
-            setSelection(currentUrl.length)
-            hint = "https://your-app.onrender.com/"
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Render Cloud Backend URL")
-            .setMessage("Connected to Render database. Enter your live Render URL or keep the default:")
-            .setView(input)
-            .setPositiveButton("Save & Connect") { _, _ ->
-                val newUrl = input.text.toString().trim()
-                if (newUrl.isNotEmpty()) {
-                    val success = ApiClient.setBaseUrl(requireContext(), newUrl)
-                    if (success) {
-                        Toast.makeText(requireContext(), "Updated backend URL to $newUrl", Toast.LENGTH_SHORT).show()
-                        loadCars()
-                    } else {
-                        Toast.makeText(requireContext(), "Invalid backend URL format. Must start with http:// or https://", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-            .setNeutralButton("Reset Default") { _, _ ->
-                ApiClient.setBaseUrl(requireContext(), ApiClient.DEFAULT_RENDER_URL)
-                Toast.makeText(requireContext(), "Reset to default Render URL", Toast.LENGTH_SHORT).show()
-                loadCars()
-            }
-            .setNegativeButton("Close", null)
-            .show()
-    }
-
     private fun setupSearch() {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -161,7 +212,7 @@ class HomeFragment : Fragment() {
                 binding.btnClearSearch.visibility = if (query.isNotEmpty()) View.VISIBLE else View.GONE
                 searchJob?.cancel()
                 searchJob = viewLifecycleOwner.lifecycleScope.launch {
-                    delay(300)
+                    delay(250)
                     currentFilter = currentFilter.copy(searchQuery = query)
                     loadCars()
                 }
@@ -192,28 +243,5 @@ class HomeFragment : Fragment() {
             binding.rvCars.visibility = View.VISIBLE
             binding.emptyState.visibility = View.GONE
         }
-
-        // Asynchronously synchronize with Render cloud backend
-        viewLifecycleOwner.lifecycleScope.launch {
-            val result = repo.refreshCarsFromBackend()
-            if (result.isSuccess && isAdded) {
-                val updatedCars = repo.getCars(currentFilter)
-                carAdapter.submitList(updatedCars)
-                binding.tvCarCount.text = "(${updatedCars.size} cars)"
-
-                if (updatedCars.isEmpty()) {
-                    binding.rvCars.visibility = View.GONE
-                    binding.emptyState.visibility = View.VISIBLE
-                } else {
-                    binding.rvCars.visibility = View.VISIBLE
-                    binding.emptyState.visibility = View.GONE
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

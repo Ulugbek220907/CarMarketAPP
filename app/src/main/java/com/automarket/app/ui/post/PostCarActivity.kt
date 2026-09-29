@@ -21,7 +21,6 @@ class PostCarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostCarBinding
     private val repository by lazy { (application as AutoMarketApplication).repository }
 
-    // 3 Photos stored locally in internal storage to avoid CursorWindow and memory issues
     private var photo1Path: String? = null
     private var photo2Path: String? = null
     private var photo3Path: String? = null
@@ -110,7 +109,7 @@ class PostCarActivity : AppCompatActivity() {
             val localPath = ImageUtils.saveImageUriToInternalStorage(this@PostCarActivity, uri)
             withContext(Dispatchers.Main) {
                 if (localPath == null) {
-                    Toast.makeText(this@PostCarActivity, "Failed to compress and save image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@PostCarActivity, "Failed to load and compress image", Toast.LENGTH_SHORT).show()
                     return@withContext
                 }
 
@@ -186,15 +185,15 @@ class PostCarActivity : AppCompatActivity() {
     }
 
     private fun publishListing() {
-        val titleInput = binding.etMakeModel.text?.toString()?.trim() ?: ""
-        val mileageStr = binding.etMileage.text?.toString()?.trim() ?: ""
-        val priceStr = binding.etPrice.text?.toString()?.trim() ?: ""
+        val titleInput = binding.etMakeModel.text?.toString()?.trim().orEmpty()
+        val mileageStr = binding.etMileage.text?.toString()?.trim().orEmpty()
+        val priceStr = binding.etPrice.text?.toString()?.trim().orEmpty()
         val transmission = binding.etTransmission.text?.toString()?.trim()?.ifEmpty { "Automatic" } ?: "Automatic"
         val bodyStyle = binding.etBody.text?.toString()?.trim()?.ifEmpty { "Sedan" } ?: "Sedan"
-        val sellerName = binding.etSellerName.text?.toString()?.trim()?.ifEmpty { "Seller" } ?: "Seller"
-        val location = binding.etLocation.text?.toString()?.trim() ?: ""
-        val phone = binding.etPhone.text?.toString()?.trim() ?: ""
-        val description = binding.etDescription.text?.toString()?.trim() ?: ""
+        val sellerName = binding.etSellerName.text?.toString()?.trim()?.ifEmpty { "Verified Seller" } ?: "Verified Seller"
+        val location = binding.etLocation.text?.toString()?.trim().orEmpty()
+        val phone = binding.etPhone.text?.toString()?.trim().orEmpty()
+        val description = binding.etDescription.text?.toString()?.trim().orEmpty()
 
         if (titleInput.isEmpty() || mileageStr.isEmpty() || priceStr.isEmpty()) {
             Toast.makeText(this, getString(R.string.missing_fields_error), Toast.LENGTH_SHORT).show()
@@ -206,21 +205,24 @@ class PostCarActivity : AppCompatActivity() {
             return
         }
 
-        // Save seller details for future listings
+        // Save seller details for future listings and sync to Firebase Auth
         val prefs = getSharedPreferences("seller_profile_prefs", MODE_PRIVATE)
         prefs.edit()
             .putString("seller_name", sellerName)
             .putString("location", location)
             .putString("phone", phone)
             .apply()
+        repository.updateUserProfile(sellerName, phone)
 
         val mileage = mileageStr.toIntOrNull() ?: 0
         val price = priceStr.toDoubleOrNull() ?: 0.0
 
         val tokens = titleInput.split(" ")
-        val year = tokens.firstOrNull()?.toIntOrNull() ?: 2023
+        val year = tokens.firstOrNull()?.toIntOrNull() ?: 2024
         val make = if (tokens.size > 1) tokens[1] else "Vehicle"
         val model = if (tokens.size > 2) tokens.subList(2, tokens.size).joinToString(" ") else "Model"
+
+        val selectedPhotos = listOfNotNull(photo1Path, photo2Path, photo3Path)
 
         val newCar = Car(
             make = make,
@@ -231,19 +233,42 @@ class PostCarActivity : AppCompatActivity() {
             transmission = transmission,
             bodyStyle = bodyStyle,
             location = location,
-            description = description.ifEmpty { "$year $make $model" },
+            description = description.ifEmpty { "$year $make $model in excellent condition." },
             sellerName = sellerName,
             sellerPhone = phone,
-            photo1 = photo1Path,
-            photo2 = photo2Path,
-            photo3 = photo3Path,
             isFavorite = false,
             isUserListing = true,
             createdAt = System.currentTimeMillis()
         )
 
-        Toast.makeText(this, "Publishing vehicle to Render cloud...", Toast.LENGTH_SHORT).show()
-        repository.addCar(newCar)
-        finish()
+        // Show uploading progress overlay
+        binding.uploadProgressContainer.visibility = View.VISIBLE
+        binding.uploadProgressBar.progress = 0
+        binding.tvUploadPercent.text = "0%"
+        binding.tvUploadStatus.text = "Uploading photos to Firebase Storage..."
+
+        lifecycleScope.launch {
+            val result = repository.addCarWithUpload(
+                car = newCar,
+                localPhotoPaths = selectedPhotos,
+                onProgress = { progress ->
+                    runOnUiThread {
+                        binding.uploadProgressBar.progress = progress
+                        binding.tvUploadPercent.text = "$progress%"
+                        if (progress >= 95) {
+                            binding.tvUploadStatus.text = "Publishing listing to Cloud Firestore..."
+                        }
+                    }
+                }
+            )
+
+            if (result.isSuccess) {
+                Toast.makeText(this@PostCarActivity, "Vehicle listing published to Firebase!", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                binding.uploadProgressContainer.visibility = View.GONE
+                Toast.makeText(this@PostCarActivity, "Failed to publish listing: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

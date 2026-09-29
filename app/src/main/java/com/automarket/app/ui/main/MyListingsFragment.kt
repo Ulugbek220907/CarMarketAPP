@@ -20,6 +20,10 @@ class MyListingsFragment : Fragment() {
 
     private lateinit var carAdapter: CarAdapter
 
+    private val updateListener: () -> Unit = {
+        loadListings()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,12 +38,22 @@ class MyListingsFragment : Fragment() {
 
         setupRecyclerView()
         setupListeners()
+
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.addUpdateListener(updateListener)
         loadListings()
     }
 
     override fun onResume() {
         super.onResume()
         loadListings()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.removeUpdateListener(updateListener)
+        _binding = null
     }
 
     private fun setupRecyclerView() {
@@ -70,7 +84,7 @@ class MyListingsFragment : Fragment() {
 
     fun loadListings() {
         if (!isAdded) return
-        val repo = (requireActivity().application as AutoMarketApplication).carRepository
+        val repo = (requireActivity().application as AutoMarketApplication).repository
         val listings = repo.getUserListings()
 
         carAdapter.submitList(listings)
@@ -83,10 +97,5 @@ class MyListingsFragment : Fragment() {
             binding.recyclerViewMyListings.visibility = View.VISIBLE
             binding.emptyMyListings.visibility = View.GONE
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

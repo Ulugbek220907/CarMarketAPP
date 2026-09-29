@@ -6,16 +6,18 @@ import java.util.Date
 import java.util.Locale
 
 data class ChatMessage(
-    val id: Long = 0L,
-    val carId: Long,
-    val senderName: String,
-    val messageText: String,
+    val id: String = "",
+    val carId: String = "",
+    val senderUid: String = "",
+    val senderName: String = "Buyer",
+    val messageText: String = "",
     val timestamp: Long = System.currentTimeMillis(),
     val isFromUser: Boolean = false,
     val isSystemNotification: Boolean = false,
     val isOfficialOffer: Boolean = false,
     val offerAmount: Double = 0.0,
-    val originalListPrice: Double = 0.0
+    val originalListPrice: Double = 0.0,
+    val offerStatus: String = "PENDING" // PENDING, ACCEPTED, DECLINED, COUNTERED
 ) : Serializable {
 
     val formattedTime: String

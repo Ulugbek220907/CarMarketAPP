@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "109823475612",
+    "project_id": "carmarket-firebase-app",
+    "storage_bucket": "carmarket-firebase-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109823475612:android:5fa78b2e10c4d930e1",
+        "android_client_info": {
+          "package_name": "com.automarket.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3vE2x9Q0ZaK81j-DummyDriveMarketKey"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109823475612:android:5fa78b2e10c4d930e2",
+        "android_client_info": {
+          "package_name": "com.automarket.app.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3vE2x9Q0ZaK81j-DummyDriveMarketKey"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

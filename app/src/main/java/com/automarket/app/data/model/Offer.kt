@@ -5,11 +5,12 @@ import java.text.NumberFormat
 import java.util.Locale
 
 data class Offer(
-    val id: Long = 0L,
-    val carId: Long,
-    val buyerName: String,
-    val offeredPrice: Double,
-    val originalPrice: Double,
+    val id: String = "",
+    val carId: String = "",
+    val buyerUid: String = "",
+    val buyerName: String = "Buyer",
+    val offeredPrice: Double = 0.0,
+    val originalPrice: Double = 0.0,
     val status: String = "PENDING", // PENDING, ACCEPTED, DECLINED, COUNTERED
     val createdAt: Long = System.currentTimeMillis()
 ) : Serializable {
@@ -33,6 +34,10 @@ data class Offer(
             val diff = originalPrice - offeredPrice
             val format = NumberFormat.getCurrencyInstance(Locale.US)
             format.maximumFractionDigits = 0
-            return "-${format.format(diff)} below asking"
+            return if (diff >= 0) {
+                "-${format.format(diff)} below asking"
+            } else {
+                "+${format.format(-diff)} above asking"
+            }
         }
 }

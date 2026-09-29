@@ -7,7 +7,7 @@
     android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/surface_container_lowest"
     app:cardCornerRadius="16dp"
-    app:cardElevation="1dp"
+    app:cardElevation="2dp"
     app:strokeColor="@color/outline_variant"
     app:strokeWidth="1dp">
 
@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imageContainer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="205dp"
             android:background="@color/surface_container">
 
             <ImageView
@@ -44,6 +44,37 @@
                     android:layout_height="64dp"
                     android:src="@drawable/ic_directions_car"
                     app:tint="@color/outline" />
+            </LinearLayout>
+
+            <!-- Floating Top Left Badge: Great Deal / Verified -->
+            <LinearLayout
+                android:id="@+id/badgeDealContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_badge_emerald"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_verified"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tvBadgeDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Great Deal"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Floating Heart / Favorite Button (Top Right) -->
@@ -112,47 +143,170 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:gravity="top"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvCarTitle"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/on_surface"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    tools:text="2022 Toyota Camry" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvPrice"
+                    <TextView
+                        android:id="@+id/tvCarTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/on_surface"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        tools:text="2022 Tesla Model 3" />
+
+                    <TextView
+                        android:id="@+id/tvCarSpecs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="12sp"
+                        tools:text="Long Range Dual Motor" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:textColor="@color/primary_container"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="$24,500" />
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_container"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="$31,450" />
+
+                    <TextView
+                        android:id="@+id/tvMonthlyEstimate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/outline"
+                        android:textSize="11sp"
+                        tools:text="$482/mo est." />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Specs Summary Row: Mileage • Transmission • Body Style -->
-            <TextView
-                android:id="@+id/tvCarSpecs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="13sp"
-                tools:text="31,000 mi • Automatic • Sedan" />
-
-            <!-- Location Row -->
+            <!-- 3-Chip Specs Matrix (Mileage, Transmission, BodyStyle) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_chip_spec"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="6dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_speedometer"
+                        app:tint="@color/outline" />
+
+                    <TextView
+                        android:id="@+id/tvChipMileage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/on_surface"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="28k mi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_chip_spec"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="6dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_transmission"
+                        app:tint="@color/outline" />
+
+                    <TextView
+                        android:id="@+id/tvChipTransmission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/on_surface"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="Automatic" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_chip_spec"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="6dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_directions_car"
+                        app:tint="@color/outline" />
+
+                    <TextView
+                        android:id="@+id/tvChipBody"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/on_surface"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="Sedan" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Hairline Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/outline_variant" />
+
+            <!-- Location & Verified Seller Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -170,15 +324,16 @@
                     android:layout_weight="1"
                     android:textColor="@color/outline"
                     android:textSize="12sp"
-                    tools:text="Tashkent" />
+                    tools:text="Austin, TX" />
 
                 <TextView
                     android:id="@+id/tvSellerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/on_surface"
                     android:textSize="12sp"
-                    tools:text="Seller: Ulugbek" />
+                    android:textStyle="bold"
+                    tools:text="★ 4.9 (Marcus Chen)" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -83,7 +83,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,12 +126,152 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Horizontal Category Chips (All, SUV, Sedan, Electric, Truck, Luxury, Hybrid) -->
+    <HorizontalScrollView
+        android:id="@+id/categoryChipsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_container_lowest"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chipCategoryAll"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/btn_primary_blue"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="All"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/chipCategorySUV"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="SUV"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategorySedan"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Sedan"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryElectric"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Electric"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryTruck"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Truck"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryLuxury"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Luxury"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryHybrid"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Hybrid"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryCoupe"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Coupe"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryUnder30K"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Under $30k"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/chipCategoryLowMiles"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_category_inactive"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Low Miles"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/outline_variant" />
 
-    <!-- Section Header: Available Listings -->
+    <!-- Section Header: Available Listings & Sort -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,19 +285,49 @@
             android:id="@+id/tvFeaturedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Available Vehicles"
+            android:text="Featured Listings"
             android:textColor="@color/on_surface"
             android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCarCount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:layout_weight="1"
             android:textColor="@color/on_surface_variant"
             android:textSize="13sp"
-            tools:text="(2 cars)" />
+            tools:text="(5 cars)" />
+
+        <!-- Interactive Sort Selector Pill -->
+        <LinearLayout
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_chip_spec"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_tune"
+                app:tint="@color/on_surface_variant" />
+
+            <TextView
+                android:id="@+id/tvSortLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Sort"
+                android:textColor="@color/on_surface"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Main Feed Container -->
@@ -197,7 +368,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="No vehicles listed yet"
+                android:text="No vehicles match your filter"
                 android:textColor="@color/on_surface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -206,7 +377,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Post your vehicle and connect with buyers directly."
+                android:text="Try adjusting your search criteria or post your vehicle."
                 android:textColor="@color/on_surface_variant"
                 android:textSize="13sp" />
 

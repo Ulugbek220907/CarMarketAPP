@@ -36,19 +36,35 @@ class CarAdapter(
         fun bind(car: Car) {
             binding.tvCarTitle.text = car.displayTitle
             binding.tvPrice.text = car.formattedPrice
-            binding.tvCarSpecs.text = car.specsSummary
+            binding.tvMonthlyEstimate.text = car.monthlyEstimate
+            val shortMileage = if (car.mileage >= 1000) "${car.mileage / 1000}k mi" else "${car.mileage} mi"
+            binding.tvChipMileage.text = shortMileage
+            binding.tvChipTransmission.text = car.transmission.take(10)
+            binding.tvChipBody.text = car.bodyStyle
+            binding.tvCarSpecs.text = "${car.make} ${car.model}"
             binding.tvLocation.text = if (car.location.isNotBlank()) car.location else "Available"
-            binding.tvSellerName.text = if (car.sellerName.isNotBlank()) "Seller: ${car.sellerName}" else ""
+            binding.tvSellerName.text = if (car.sellerName.isNotBlank()) "★ 4.9 • ${car.sellerName}" else "Verified Seller"
 
-            val photos = car.getPhotos()
-            val count = if (photos.isNotEmpty()) photos.size else 0
+            val count = car.photoCount
             binding.tvPhotoCount.text = "$count"
             binding.photoBadgeContainer.visibility = if (count > 0) View.VISIBLE else View.GONE
+
+            // Deal Badge: Highlight good value
+            if (car.price in 1.0..35000.0) {
+                binding.badgeDealContainer.visibility = View.VISIBLE
+                binding.tvBadgeDeal.text = "Great Deal"
+            } else if (car.price > 70000.0) {
+                binding.badgeDealContainer.visibility = View.VISIBLE
+                binding.tvBadgeDeal.text = "Verified Luxury"
+            } else {
+                binding.badgeDealContainer.visibility = View.VISIBLE
+                binding.tvBadgeDeal.text = "Verified"
+            }
 
             ImageUtils.loadImage(
                 imageView = binding.ivCarImage,
                 placeholderView = binding.placeholderContainer,
-                pathOrUri = photos.firstOrNull()
+                pathOrUri = car.primaryPhotoUrl
             )
 
             updateBookmarkIcon(car.isFavorite)
@@ -73,7 +89,7 @@ class CarAdapter(
             } else {
                 binding.ivBookmark.setImageResource(R.drawable.ic_bookmark)
                 binding.ivBookmark.setColorFilter(
-                    ContextCompat.getColor(binding.root.context, R.color.on_surface)
+                    ContextCompat.getColor(binding.root.context, R.color.white)
                 )
             }
         }

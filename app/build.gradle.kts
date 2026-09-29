@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -72,13 +73,27 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.1")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
 
-    // Networking: Retrofit & OkHttp
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    // Firebase BoM & Services
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
+    // Modern Image Loading: Coil
+    implementation("io.coil-kt:coil:2.6.0")
 
     // Unit Testing
     testImplementation("junit:junit:4.13.2")
+}
+
+tasks.register<JavaExec>("runUnitTests") {
+    dependsOn("compileDebugUnitTestKotlin")
+    val testClasses = file("build/tmp/kotlin-classes/debugUnitTest")
+    val appClasses = file("build/tmp/kotlin-classes/debug")
+    val runtimeClasspath = configurations.getByName("debugUnitTestRuntimeClasspath")
+    classpath = files(testClasses, appClasses, runtimeClasspath)
+    mainClass.set("org.junit.runner.JUnitCore")
+    args("com.automarket.app.CarModelTest")
 }

@@ -50,12 +50,29 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_messages -> {
                     val repo = (application as AutoMarketApplication).repository
-                    val cars = repo.getCars(CarFilter())
-                    val firstCar = cars.firstOrNull()
-                    if (firstCar != null) {
-                        ChatOffersActivity.start(this, firstCar.id)
-                    } else {
-                        Toast.makeText(this, "No active vehicle chats yet", Toast.LENGTH_SHORT).show()
+                    val userCars = repo.getUserListings()
+                    val allCars = repo.getCars(CarFilter())
+
+                    when {
+                        userCars.isNotEmpty() -> {
+                            if (userCars.size == 1) {
+                                ChatOffersActivity.start(this, userCars[0].id)
+                            } else {
+                                val titles = userCars.map { "${it.displayTitle} (${it.formattedPrice})" }.toTypedArray()
+                                androidx.appcompat.app.AlertDialog.Builder(this)
+                                    .setTitle("Select Vehicle Inquiries")
+                                    .setItems(titles) { _, which ->
+                                        ChatOffersActivity.start(this, userCars[which].id)
+                                    }
+                                    .show()
+                            }
+                        }
+                        allCars.isNotEmpty() -> {
+                            ChatOffersActivity.start(this, allCars[0].id)
+                        }
+                        else -> {
+                            Toast.makeText(this, "No vehicle listings available for chat", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     false
                 }

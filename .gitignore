@@ -22,3 +22,6 @@ server/data/*.db-journal
 
 # Gradle wrapper cache
 .gradle/
+
+# Kotlin cache
+.kotlin/

@@ -18,6 +18,10 @@ class FavoritesFragment : Fragment() {
 
     private lateinit var carAdapter: CarAdapter
 
+    private val updateListener: () -> Unit = {
+        loadFavorites()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,12 +35,21 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.addUpdateListener(updateListener)
         loadFavorites()
     }
 
     override fun onResume() {
         super.onResume()
         loadFavorites()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val repo = (requireActivity().application as AutoMarketApplication).repository
+        repo.removeUpdateListener(updateListener)
+        _binding = null
     }
 
     private fun setupRecyclerView() {
@@ -73,10 +86,5 @@ class FavoritesFragment : Fragment() {
             binding.recyclerViewFavorites.visibility = View.VISIBLE
             binding.emptyFavorites.visibility = View.GONE
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

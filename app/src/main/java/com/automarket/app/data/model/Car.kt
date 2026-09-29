@@ -3,26 +3,24 @@ package com.automarket.app.data.model
 import java.io.Serializable
 import java.text.NumberFormat
 import java.util.Locale
-import kotlin.math.roundToInt
 
 data class Car(
-    val id: Long = 0L,
-    val make: String,
-    val model: String,
-    val year: Int = 2023,
-    val price: Double,
-    val mileage: Int,
+    val id: String = "",
+    val make: String = "",
+    val model: String = "",
+    val year: Int = 2024,
+    val price: Double = 0.0,
+    val mileage: Int = 0,
     val transmission: String = "Automatic",
     val bodyStyle: String = "Sedan",
     val location: String = "",
     val description: String = "",
     val sellerName: String = "Seller",
     val sellerPhone: String = "",
-    val photo1: String? = null,
-    val photo2: String? = null,
-    val photo3: String? = null,
+    val sellerUid: String = "",
+    val photoUrls: List<String> = emptyList(),
     val isFavorite: Boolean = false,
-    val isUserListing: Boolean = true,
+    val isUserListing: Boolean = false,
     val createdAt: Long = System.currentTimeMillis()
 ) : Serializable {
 
@@ -45,14 +43,26 @@ data class Car(
             return "${format.format(mileage)} mi"
         }
 
-    fun getPhotos(): List<String> {
-        val list = mutableListOf<String>()
-        photo1?.takeIf { it.isNotBlank() }?.let { list.add(it) }
-        photo2?.takeIf { it.isNotBlank() }?.let { list.add(it) }
-        photo3?.takeIf { it.isNotBlank() }?.let { list.add(it) }
-        return list
-    }
+    val monthlyEstimate: String
+        get() {
+            if (price <= 0) return "$0/mo est."
+            // 72 months, ~5.4% APR estimate
+            val monthly = (price * 1.15) / 72.0
+            val format = NumberFormat.getCurrencyInstance(Locale.US)
+            format.maximumFractionDigits = 0
+            return "${format.format(monthly)}/mo est."
+        }
+
+    fun getPhotos(): List<String> = photoUrls
 
     val photoCount: Int
-        get() = getPhotos().size
+        get() = photoUrls.size
+
+    val primaryPhotoUrl: String?
+        get() = photoUrls.firstOrNull()
+
+    // Backwards compatibility properties
+    val photo1: String? get() = photoUrls.getOrNull(0)
+    val photo2: String? get() = photoUrls.getOrNull(1)
+    val photo3: String? get() = photoUrls.getOrNull(2)
 }
